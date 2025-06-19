@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  main-server:
+    image: hyeonseong1010/personal:latest
+    container_name: backend-server
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    volumes:
+      - ./app-data:/app/data
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql:
+
