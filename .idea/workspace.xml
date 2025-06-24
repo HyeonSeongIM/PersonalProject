@@ -1,175 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="f631faeb-c276-4785-a8a2-c6d40cc60233" name="Changes" comment="Docker-compose 수정">
-      <change afterPath="$PROJECT_DIR$/Jenkinsfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitattributes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/backend/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/nginx/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/backend/data/nginx/nginx.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy.sh" beforeDir="false" afterPath="$PROJECT_DIR$/backend/deploy.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/backend/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/backend/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/backend/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/backend/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/project/personalproject/PersonalProjectApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/PersonalProjectApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-local.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application-local.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application-prod.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-secret.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application-secret.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/project/personalproject/PersonalProjectApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/project/personalproject/PersonalProjectApplicationTests.java" afterDir="false" />
+    <list default="true" id="5614f56f-9b18-4274-a494-75fd86e20e40" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExternalProjectsData">
-    <projectState path="$PROJECT_DIR$">
-      <ProjectState />
-    </projectState>
-  </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
-        <projects_view>
-          <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="PersonalProject" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="PersonalProject" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="PersonalProject" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-            </expand>
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Dockerfile" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="jenkins/init" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;HyeonSeongIM&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "HyeonSeongIM"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/HyeonSeongIM/PersonalProject.git&quot;,
-    &quot;accountId&quot;: &quot;a56052e1-a5d0-4515-b465-a5ef03db4933&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/HyeonSeongIM/PersonalProject.git",
+    "accountId": "a56052e1-a5d0-4515-b465-a5ef03db4933"
   }
-}</component>
-  <component name="KubernetesApiPersistence">{}</component>
-  <component name="KubernetesApiProvider">{
-  &quot;isMigrated&quot;: true
-}</component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 4
-}</component>
-  <component name="ProjectId" id="2yg1vojOkiRM6TZUCRst0OJ6tjq" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2ywkJLTXfTrMJo3odG5MJS0s3OY" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Gradle.Build PersonalProject.executor": "Run",
-    "Gradle.PersonalProject [build].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.PersonalProjectApplication.executor": "Run",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Setting",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/user/IdeaProjects/PersonalProject",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/backend" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Spring Boot.PersonalProjectApplication">
-    <configuration name="PersonalProject [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="PersonalProjectApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <module name="PersonalProject.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="project.personalproject.PersonalProjectApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.PersonalProject [build]" />
-      </list>
-    </recent_temporary>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -181,154 +53,16 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f631faeb-c276-4785-a8a2-c6d40cc60233" name="Changes" comment="" />
-      <created>1750241636566</created>
+      <changelist id="5614f56f-9b18-4274-a494-75fd86e20e40" name="Changes" comment="" />
+      <created>1750752950160</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1750241636566</updated>
-      <workItem from="1750241637843" duration="543000" />
-      <workItem from="1750306804612" duration="4233000" />
-      <workItem from="1750320019340" duration="6309000" />
-      <workItem from="1750382601936" duration="5361000" />
-      <workItem from="1750402731330" duration="6000" />
-      <workItem from="1750402894407" duration="3547000" />
-      <workItem from="1750426383314" duration="1717000" />
-      <workItem from="1750431838876" duration="85000" />
-      <workItem from="1750432805089" duration="1090000" />
-      <workItem from="1750748793215" duration="875000" />
+      <updated>1750752950160</updated>
+      <workItem from="1750752951346" duration="149000" />
     </task>
-    <task id="LOCAL-00001" summary="[#1] Feat : Docker 설정&#10;- docker-compose.yml&#10;- Dockerfile">
-      <option name="closed" value="true" />
-      <created>1750307741100</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1750307741100</updated>
-    </task>
-    <task id="LOCAL-00002" summary="[#1] Feat : Application yml 파일 설정&#10;- local : 로컬 환경&#10;- dev : 통합&#10;- prod : 배포&#10;- secret : 민감정보">
-      <option name="closed" value="true" />
-      <created>1750307944583</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1750307944583</updated>
-    </task>
-    <task id="LOCAL-00003" summary="[#1] Feat : Deploy.sh 작성&#10;- Docker로 띄우기">
-      <option name="closed" value="true" />
-      <created>1750308849755</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1750308849755</updated>
-    </task>
-    <task id="LOCAL-00004" summary="[#1] Feat : Deploy.sh 작성&#10;- Docker-compose 적용">
-      <option name="closed" value="true" />
-      <created>1750308898488</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1750308898488</updated>
-    </task>
-    <task id="LOCAL-00005" summary="[#1] Feat : application 파일 설정">
-      <option name="closed" value="true" />
-      <created>1750310645369</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1750310645369</updated>
-    </task>
-    <task id="LOCAL-00006" summary="[#3] Feat : Nginx Docker 생성">
-      <option name="closed" value="true" />
-      <created>1750322770866</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1750322770867</updated>
-    </task>
-    <task id="LOCAL-00007" summary="[#3] Fix : Nginx Docker 일부 수정&#10;- 볼륨 마운트 로직&#10;- 네트워크 연결&#10;- mysql 볼륨 삭제">
-      <option name="closed" value="true" />
-      <created>1750326254794</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1750326254794</updated>
-    </task>
-    <task id="LOCAL-00008" summary="[#3] Feat : nginx.conf 생성&#10;- SSL 적용">
-      <option name="closed" value="true" />
-      <created>1750326275852</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1750326275852</updated>
-    </task>
-    <task id="LOCAL-00009" summary="[#3] Fix : nginx.conf 재구성&#10;- 백엔드 도커 연결">
-      <option name="closed" value="true" />
-      <created>1750326581340</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1750326581340</updated>
-    </task>
-    <task id="LOCAL-00010" summary="[#4] Fix : nginx.conf 구성&#10;- jenkins 설정">
-      <option name="closed" value="true" />
-      <created>1750407022943</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1750407022943</updated>
-    </task>
-    <task id="LOCAL-00011" summary="[#4] Fix : docker network 구성&#10;- 외부 네트워크 사용">
-      <option name="closed" value="true" />
-      <created>1750427072504</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1750427072504</updated>
-    </task>
-    <task id="LOCAL-00012" summary="[#4] Fix : nginx 설정">
-      <option name="closed" value="true" />
-      <created>1750428191731</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1750428191731</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Docker-compose 수정">
-      <option name="closed" value="true" />
-      <created>1750433097088</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1750433097088</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Docker-compose 수정">
-      <option name="closed" value="true" />
-      <created>1750433589872</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1750433589872</updated>
-    </task>
-    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="[#1] Feat : Docker 설정&#10;- docker-compose.yml&#10;- Dockerfile" />
-    <MESSAGE value="[#1] Feat : Application yml 파일 설정&#10;- local : 로컬 환경&#10;- dev : 통합&#10;- prod : 배포&#10;- secret : 민감정보" />
-    <MESSAGE value="[#1] Feat : Deploy.sh 작성&#10;- Docker로 띄우기" />
-    <MESSAGE value="[#1] Feat : Deploy.sh 작성&#10;- Docker-compose 적용" />
-    <MESSAGE value="[#1] Feat : application 파일 설정" />
-    <MESSAGE value="[#3] Feat : Nginx Docker 생성" />
-    <MESSAGE value="[#3] Fix : Nginx Docker 일부 수정&#10;- 볼륨 마운트 로직&#10;- 네트워크 연결&#10;- mysql 볼륨 삭제" />
-    <MESSAGE value="[#3] Feat : nginx.conf 생성&#10;- SSL 적용" />
-    <MESSAGE value="[#3] Fix : nginx.conf 재구성&#10;- 백엔드 도커 연결" />
-    <MESSAGE value="[#4] Fix : nginx.conf 구성&#10;- jenkins 설정" />
-    <MESSAGE value="[#4] Fix : docker network 구성&#10;- 외부 네트워크 사용" />
-    <MESSAGE value="[#4] Fix : nginx 설정" />
-    <MESSAGE value="Docker-compose 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="Docker-compose 수정" />
   </component>
 </project>
