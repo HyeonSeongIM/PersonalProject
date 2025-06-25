@@ -1,0 +1,59 @@
+node {
+    def app
+
+    stage('Clone') {
+        checkout scm
+    }
+
+    stage('Build') {
+        sh './gradlew clean build'
+    }
+
+    stage('Docker Build') {
+        app = docker.build('hyeonseong1010/personal-dev')
+    }
+
+    stage('Push Image') {
+            docker.withRegistry('https://registry.hub.docker.com', 'DockerCD') {
+                app.push("${env.BUILD_NUMBER}")
+                app.push("latest")
+            }
+        }
+
+    stage('Deploy') {
+        withCredentials([
+            usernamePassword(credentialsId: 'DockerCD',
+                           usernameVariable: 'DOCKER_USER',
+                           passwordVariable: 'DOCKER_PASS')
+        ]) {
+            sshPublisher(
+                publishers: [
+                    sshPublisherDesc(
+                        configName: 'instance-20250618-1725',
+                        transfers: [
+                            sshTransfer(
+                                sourceFiles: '/scripts/deploy-dev.sh,/deploy/docker-compose-dev.yml',
+                                removePrefix: '',
+                                verbose: true,
+                                remoteDirectory: '.'
+                            ),
+                            sshTransfer(
+                                sourceFiles: 'data/nginx/**',
+                                removePrefix: 'data/nginx',
+                                verbose: true,
+                                remoteDirectory: '.'
+                            ),
+                            sshTransfer(
+                                execCommand: """
+                                    chmod +x /home/ubuntu/deploy-dev.sh &&
+                                    echo '${DOCKER_PASS}' | sudo docker login -u '${DOCKER_USER}' --password-stdin &&
+                                    sudo sh /home/ubuntu/deploy-dev.sh
+                                """
+                            )
+                        ]
+                    )
+                ]
+            )
+        }
+    }
+}
