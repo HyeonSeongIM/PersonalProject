@@ -5,16 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5614f56f-9b18-4274-a494-75fd86e20e40" name="Changes" comment="[#5] Feat : 기본 모노레포 구조 생성">
-      <change afterPath="$PROJECT_DIR$/Jenkinsfile.main" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/build_gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/Jenkinsfile.dev" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy/docker-compose-production-backend.yml" beforeDir="false" afterPath="$PROJECT_DIR$/data/nginx.dev.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy/docker-compose-production-frontend.yml" beforeDir="false" afterPath="$PROJECT_DIR$/data/nginx.main.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy/docker-compose-staging.yml" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/docker-compose-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/deploy-production-backend.sh" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/docker-compose-main.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/deploy-production-frontend.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/deploy-dev.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/deploy-staging.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/deploy-main.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/backend/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/deploy.sh" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,14 +36,16 @@
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="2ywkJLTXfTrMJo3odG5MJS0s3OY" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.build.gradle.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Setting",
+    "git-widget-placeholder": "post/feat/init",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/user/IdeaProjects/PersonalProject",
     "node.js.detected.package.eslint": "true",
@@ -55,7 +53,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -84,6 +82,7 @@
       <updated>1750752950160</updated>
       <workItem from="1750752951346" duration="149000" />
       <workItem from="1750754093750" duration="3194000" />
+      <workItem from="1751350781456" duration="511000" />
     </task>
     <task id="LOCAL-00001" summary="[#5] Feat : 기본 모노레포 구조 생성">
       <option name="closed" value="true" />

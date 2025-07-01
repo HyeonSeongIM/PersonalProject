@@ -31,6 +31,101 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    //JDBC
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+    // Database
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.h2database:h2'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // MiniO
+    implementation 'io.minio:minio:8.4.2'
+
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // Spring Boot에서 기본적으로 사용되는 OAuth2 관련 의존성 (선택 사항)
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+    // JWT 인증을 사용할 경우 (선택 사항)
+    implementation 'com.auth0:java-jwt:4.4.0'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+    // 테스트
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // 유효성 검증
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Mongo DB
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+    // ELK
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+
+    // UUID
+    implementation("com.github.f4b6a3:tsid-creator:5.2.6")
+
+    // AOP
+    implementation( "org.springframework.boot:spring-boot-starter-aop")
+
+    runtimeOnly("com.mysql:mysql-connector-j")
+
+    // 로그백
+    implementation("net.logstash.logback:logstash-logback-encoder:7.4")
+
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+
+    // JSON
+    implementation 'org.json:json:20231013'
+
+    // Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+
+    // GCS
+    implementation 'com.google.cloud:google-cloud-storage:2.30.0'
+
+    //QueryDsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-admin:9.2.0' // 최신 버전 확인
+
+    // Throttling
+    implementation 'com.bucket4j:bucket4j-core:8.3.0'
+
+    // Websocket + stomp
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // logback
+    implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
+    implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
+
+    // 타임리프
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // Actuator - 애플리케이션 모니터링 및 메트릭 노출
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    // Slack
+    implementation 'com.github.maricn:logback-slack-appender:1.6.1'
+    implementation 'com.slack.api:slack-api-client:1.30.0'
+
 }
 
 tasks.named('test') {
