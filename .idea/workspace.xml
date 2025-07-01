@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5614f56f-9b18-4274-a494-75fd86e20e40" name="Changes" comment="[#5] Feat : 기본 모노레포 구조 생성">
-      <change afterPath="$PROJECT_DIR$/Jenkinsfile.main" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/Jenkinsfile.dev" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy/docker-compose-production-backend.yml" beforeDir="false" afterPath="$PROJECT_DIR$/data/nginx.dev.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy/docker-compose-production-frontend.yml" beforeDir="false" afterPath="$PROJECT_DIR$/data/nginx.main.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy/docker-compose-staging.yml" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/docker-compose-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/deploy-production-backend.sh" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/docker-compose-main.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/deploy-production-frontend.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/deploy-dev.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/deploy-staging.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/deploy-main.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,21 +35,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Setting",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/user/IdeaProjects/PersonalProject",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Setting&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/user/IdeaProjects/PersonalProject&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/deploy" />
@@ -84,6 +75,8 @@
       <updated>1750752950160</updated>
       <workItem from="1750752951346" duration="149000" />
       <workItem from="1750754093750" duration="3194000" />
+      <workItem from="1750824974086" duration="969000" />
+      <workItem from="1751349352898" duration="17000" />
     </task>
     <task id="LOCAL-00001" summary="[#5] Feat : 기본 모노레포 구조 생성">
       <option name="closed" value="true" />
@@ -93,7 +86,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750754675758</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="[#5] Feat : 기본 모노레포 구조 생성">
+      <option name="closed" value="true" />
+      <created>1750828115394</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1750828115394</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
