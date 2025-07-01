@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5614f56f-9b18-4274-a494-75fd86e20e40" name="Changes" comment="[#5] Feat : 기본 모노레포 구조 생성">
+      <change afterPath="$PROJECT_DIR$/Jenkinsfile.main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/Jenkinsfile.dev" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy/docker-compose-production-backend.yml" beforeDir="false" afterPath="$PROJECT_DIR$/data/nginx.dev.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy/docker-compose-production-frontend.yml" beforeDir="false" afterPath="$PROJECT_DIR$/data/nginx.main.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy/docker-compose-staging.yml" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/docker-compose-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/deploy-production-backend.sh" beforeDir="false" afterPath="$PROJECT_DIR$/deploy/docker-compose-main.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/deploy-production-frontend.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/deploy-dev.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/deploy-staging.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/deploy-main.sh" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;HyeonSeongIM&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/HyeonSeongIM/PersonalProject.git&quot;,
+    &quot;accountId&quot;: &quot;a56052e1-a5d0-4515-b465-a5ef03db4933&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2ywkJLTXfTrMJo3odG5MJS0s3OY" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Setting",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/user/IdeaProjects/PersonalProject",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/deploy" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/deploy/scripts" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.387" />
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.387" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5614f56f-9b18-4274-a494-75fd86e20e40" name="Changes" comment="" />
+      <created>1750752950160</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750752950160</updated>
+      <workItem from="1750752951346" duration="149000" />
+      <workItem from="1750754093750" duration="3194000" />
+    </task>
+    <task id="LOCAL-00001" summary="[#5] Feat : 기본 모노레포 구조 생성">
+      <option name="closed" value="true" />
+      <created>1750754675758</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1750754675758</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="[#5] Feat : 기본 모노레포 구조 생성" />
+    <option name="LAST_COMMIT_MESSAGE" value="[#5] Feat : 기본 모노레포 구조 생성" />
+  </component>
+</project>
