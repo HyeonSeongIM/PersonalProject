@@ -3,6 +3,7 @@ package project.personalproject.post.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.personalproject.post.dto.request.PostRequest;
+import project.personalproject.post.entity.Post;
 import project.personalproject.post.repository.PostRepository;
 import project.personalproject.post.service.PostService;
 
@@ -15,6 +16,15 @@ public class PostServiceImpl implements PostService {
     @Override
     // TODO : 게시글 생성 로직 작성
     public Long create(PostRequest postRequest) {
-        throw new UnsupportedOperationException("아직 구현되지 않음");
+
+        if (postRequest.title() == null || postRequest.title().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be empty");
+        }
+
+        Post post = new Post();
+        post.setTitle(postRequest.title());
+        post.setContent(postRequest.content());
+
+        return postRepository.save(post).getId();
     }
 }
