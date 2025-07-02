@@ -48,8 +48,9 @@ dependencies {
     // MiniO
     implementation 'io.minio:minio:8.4.2'
 
-//    // Spring Security
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
 
 //    // Spring Boot에서 기본적으로 사용되는 OAuth2 관련 의존성 (선택 사항)
 //    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'

@@ -4,23 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5614f56f-9b18-4274-a494-75fd86e20e40" name="Changes" comment="[#6] Feat : Post 게시글 생성 controller 테스트">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/domain/post/dto/response/PostResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/domain/post/exception/PostException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/domain/post/service/PostService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/global/exception/ErrorController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/global/exception/GlobalExceptionHandler.java" afterDir="false" />
+    <list default="true" id="5614f56f-9b18-4274-a494-75fd86e20e40" name="Changes" comment="[#6] Feat : Post Util (TDD)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/backend/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/post/controller/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/domain/post/controller/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/post/dto/request/PostRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/domain/post/dto/request/PostRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/post/dto/response/PostResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/post/entity/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/domain/post/entity/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/post/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/domain/post/repository/PostRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/post/service/PostService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/post/service/impl/PostServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/project/personalproject/domain/post/service/impl/PostServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/test/java/project/personalproject/post/controller/PostControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/project/personalproject/post/controller/PostControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/test/java/project/personalproject/post/service/impl/PostServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/project/personalproject/post/service/impl/PostServiceImplTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,6 +79,8 @@
       <workItem from="1750754093750" duration="3194000" />
       <workItem from="1751350781456" duration="511000" />
       <workItem from="1751351391222" duration="2883000" />
+      <workItem from="1751441052232" duration="116000" />
+      <workItem from="1751441693123" duration="114000" />
     </task>
     <task id="LOCAL-00001" summary="[#5] Feat : 기본 모노레포 구조 생성">
       <option name="closed" value="true" />
@@ -127,7 +114,23 @@
       <option name="project" value="LOCAL" />
       <updated>1751438007254</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="[#6] Feat : Post 도메인 예외처리 (TDD)">
+      <option name="closed" value="true" />
+      <created>1751441075888</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1751441075888</updated>
+    </task>
+    <task id="LOCAL-00006" summary="[#6] Feat : Post Util (TDD)">
+      <option name="closed" value="true" />
+      <created>1751441710851</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1751441710851</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,6 +141,8 @@
     <MESSAGE value="[#6] Feat : Post init&#10;- controller, repository, service, dto, entity 생성" />
     <MESSAGE value="[#6] Feat : Post 게시글 생성 TDD" />
     <MESSAGE value="[#6] Feat : Post 게시글 생성 controller 테스트" />
-    <option name="LAST_COMMIT_MESSAGE" value="[#6] Feat : Post 게시글 생성 controller 테스트" />
+    <MESSAGE value="[#6] Feat : Post 도메인 예외처리 (TDD)" />
+    <MESSAGE value="[#6] Feat : Post Util (TDD)" />
+    <option name="LAST_COMMIT_MESSAGE" value="[#6] Feat : Post Util (TDD)" />
   </component>
 </project>

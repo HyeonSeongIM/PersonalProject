@@ -4,23 +4,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import project.personalproject.domain.post.controller.PostController;
 import project.personalproject.domain.post.dto.request.PostRequest;
 import project.personalproject.domain.post.exception.PostException;
 import project.personalproject.domain.post.service.PostService;
 import project.personalproject.global.exception.ErrorCode;
+import project.personalproject.global.security.SecurityConfigTest;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(PostController.class)
+@Import(SecurityConfigTest.class)
+@WebMvcTest(PostService.class)
 class PostControllerTest {
 
     @Autowired
@@ -33,12 +37,14 @@ class PostControllerTest {
     private ErrorCode errorCode;
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void 게시글_생성_API_200응답_여부_확인() throws Exception {
         // given
         PostRequest postRequest = new PostRequest("title", "content");
 
         // when & then
         mockMvc.perform(post("/api/v1/post/create")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(postRequest)))
                 .andExpect(status().isOk())
