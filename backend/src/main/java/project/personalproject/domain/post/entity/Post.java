@@ -1,4 +1,4 @@
-package project.personalproject.post.entity;
+package project.personalproject.domain.post.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

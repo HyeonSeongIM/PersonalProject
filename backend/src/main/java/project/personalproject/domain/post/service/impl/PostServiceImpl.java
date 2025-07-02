@@ -1,11 +1,13 @@
-package project.personalproject.post.service.impl;
+package project.personalproject.domain.post.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import project.personalproject.post.dto.request.PostRequest;
-import project.personalproject.post.entity.Post;
-import project.personalproject.post.repository.PostRepository;
-import project.personalproject.post.service.PostService;
+import project.personalproject.domain.post.dto.request.PostRequest;
+import project.personalproject.domain.post.entity.Post;
+import project.personalproject.domain.post.exception.PostException;
+import project.personalproject.domain.post.repository.PostRepository;
+import project.personalproject.domain.post.service.PostService;
+import project.personalproject.global.exception.ErrorCode;
 
 @RequiredArgsConstructor
 @Service
@@ -18,7 +20,7 @@ public class PostServiceImpl implements PostService {
     public Long create(PostRequest postRequest) {
 
         if (postRequest.title() == null || postRequest.title().isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be empty");
+            throw new PostException(ErrorCode.INVALID_POST_REQUEST);
         }
 
         Post post = new Post();

@@ -48,18 +48,18 @@ dependencies {
     // MiniO
     implementation 'io.minio:minio:8.4.2'
 
-    // Spring Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    // Spring Security
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    // Spring Boot에서 기본적으로 사용되는 OAuth2 관련 의존성 (선택 사항)
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-
-    // JWT 인증을 사용할 경우 (선택 사항)
-    implementation 'com.auth0:java-jwt:4.4.0'
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+//    // Spring Boot에서 기본적으로 사용되는 OAuth2 관련 의존성 (선택 사항)
+//    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+//    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+//
+//    // JWT 인증을 사용할 경우 (선택 사항)
+//    implementation 'com.auth0:java-jwt:4.4.0'
+//    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+//    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+//    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
     // 테스트
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

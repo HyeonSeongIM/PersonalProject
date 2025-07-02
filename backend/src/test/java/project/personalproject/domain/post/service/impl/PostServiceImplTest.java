@@ -1,4 +1,4 @@
-package project.personalproject.post.service.impl;
+package project.personalproject.domain.post.service.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -6,10 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import project.personalproject.post.dto.request.PostRequest;
-import project.personalproject.post.entity.Post;
-import project.personalproject.post.repository.PostRepository;
-
+import project.personalproject.domain.post.dto.request.PostRequest;
+import project.personalproject.domain.post.entity.Post;
+import project.personalproject.domain.post.exception.PostException;
+import project.personalproject.domain.post.repository.PostRepository;
+import project.personalproject.global.exception.ErrorCode;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -71,16 +72,17 @@ class PostServiceImplTest {
     }
 
     @Test
-    void 게시글_생성_DTO_빈값_예외처리_여부(){
+    void 게시글_생성_DTO_빈값_예외처리_여부() {
 
         // given
         PostRequest postRequest = new PostRequest("", "content");
 
         // when & then
-        assertThrows(IllegalArgumentException.class,
-                () -> postService.create(postRequest));
+        PostException exception = assertThrows(PostException.class, () -> {
+            postService.create(postRequest);
+        });
 
-
+        assertEquals(ErrorCode.INVALID_POST_REQUEST, exception.getErrorCode());
     }
 
 }

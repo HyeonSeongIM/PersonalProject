@@ -1,4 +1,4 @@
-package project.personalproject.post.controller;
+package project.personalproject.domain.post.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.personalproject.post.dto.request.PostRequest;
-import project.personalproject.post.service.PostService;
+import project.personalproject.domain.post.dto.request.PostRequest;
+import project.personalproject.domain.post.service.PostService;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
