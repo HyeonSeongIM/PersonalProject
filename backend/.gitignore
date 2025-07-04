@@ -35,3 +35,15 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# yml 설정파일 무시
+application.yml
+application-*.yml
+
+# 테스트 yml도 제외
+src/test/resources/application.yml
+src/test/resources/application-*.yml
+
+# 보안 관련 클래스 무시 (예시)
+src/main/java/project/personalproject/global/security/config/SocialClientRegistration
+src/main/java/project/personalproject/global/security/handler/SuccessHandler.java
