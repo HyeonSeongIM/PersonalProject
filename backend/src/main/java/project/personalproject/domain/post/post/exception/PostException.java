@@ -1,4 +1,4 @@
-package project.personalproject.domain.post.exception;
+package project.personalproject.domain.post.post.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

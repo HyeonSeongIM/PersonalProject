@@ -3,7 +3,7 @@ package project.personalproject.global.exception;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import project.personalproject.domain.post.exception.PostException;
+import project.personalproject.domain.post.post.exception.PostException;
 import project.personalproject.global.exception.dto.ErrorResponseV0;
 
 @RestControllerAdvice

@@ -1,12 +1,12 @@
-package project.personalproject.domain.post.service.impl;
+package project.personalproject.domain.post.post.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import project.personalproject.domain.post.dto.request.PostRequest;
-import project.personalproject.domain.post.entity.Post;
-import project.personalproject.domain.post.exception.PostException;
-import project.personalproject.domain.post.repository.PostRepository;
-import project.personalproject.domain.post.service.PostService;
+import project.personalproject.domain.post.post.dto.request.PostRequest;
+import project.personalproject.domain.post.post.entity.Post;
+import project.personalproject.domain.post.post.exception.PostException;
+import project.personalproject.domain.post.post.repository.PostRepository;
+import project.personalproject.domain.post.post.service.PostService;
 import project.personalproject.global.exception.ErrorCode;
 
 @RequiredArgsConstructor

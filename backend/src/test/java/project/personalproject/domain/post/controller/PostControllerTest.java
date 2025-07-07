@@ -9,9 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import project.personalproject.domain.post.dto.request.PostRequest;
-import project.personalproject.domain.post.exception.PostException;
-import project.personalproject.domain.post.service.PostService;
+import project.personalproject.domain.post.post.controller.PostController;
+import project.personalproject.domain.post.post.dto.request.PostRequest;
+import project.personalproject.domain.post.post.exception.PostException;
+import project.personalproject.domain.post.post.service.PostService;
 import project.personalproject.global.exception.ErrorCode;
 import project.personalproject.global.security.SecurityConfigTest;
 

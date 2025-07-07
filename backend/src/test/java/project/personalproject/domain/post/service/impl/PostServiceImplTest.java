@@ -6,10 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import project.personalproject.domain.post.dto.request.PostRequest;
-import project.personalproject.domain.post.entity.Post;
-import project.personalproject.domain.post.exception.PostException;
-import project.personalproject.domain.post.repository.PostRepository;
+import project.personalproject.domain.post.post.dto.request.PostRequest;
+import project.personalproject.domain.post.post.entity.Post;
+import project.personalproject.domain.post.post.exception.PostException;
+import project.personalproject.domain.post.post.repository.PostRepository;
+import project.personalproject.domain.post.post.service.impl.PostServiceImpl;
 import project.personalproject.global.exception.ErrorCode;
 
 import static org.junit.jupiter.api.Assertions.*;
