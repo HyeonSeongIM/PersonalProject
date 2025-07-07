@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
     // 게시글 처리 에러코드
-    INVALID_POST_REQUEST(100, "제목에 값을 입력해주세요!", HttpStatus.BAD_REQUEST),
-    ;
+    NOT_FOUND_POST(100, "해당 게시글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    NOT_MATCH_USER(101, "작성자만 요청할 수 있습니다.", HttpStatus.BAD_REQUEST);
 
     private final int errorCode;
     private final String message;

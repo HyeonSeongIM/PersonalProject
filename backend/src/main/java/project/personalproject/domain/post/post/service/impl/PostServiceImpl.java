@@ -2,7 +2,11 @@ package project.personalproject.domain.post.post.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import project.personalproject.domain.post.post.dto.request.PostRequest;
+import org.springframework.transaction.annotation.Transactional;
+import project.personalproject.domain.member.entity.Member;
+import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
+import project.personalproject.domain.post.post.dto.request.UpdatePostCommand;
+import project.personalproject.domain.post.post.dto.response.PostResponse;
 import project.personalproject.domain.post.post.entity.Post;
 import project.personalproject.domain.post.post.exception.PostException;
 import project.personalproject.domain.post.post.repository.PostRepository;
@@ -11,22 +15,42 @@ import project.personalproject.global.exception.ErrorCode;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
 
     @Override
-    // TODO : 게시글 생성 로직 작성
-    public Long create(PostRequest postRequest) {
+    public PostResponse createPost(CreatePostCommand postRequest, Member member) {
+        Post post = Post.from(postRequest, member);
 
-        if (postRequest.title() == null || postRequest.title().isEmpty()) {
-            throw new PostException(ErrorCode.INVALID_POST_REQUEST);
+        postRepository.save(post);
+
+        return PostResponse.of(post);
+    }
+
+    @Override
+    public PostResponse updatePost(Long postId, UpdatePostCommand postRequest, Member member) {
+
+
+
+
+        return null;
+    }
+
+    @Override
+    public PostResponse deletePost(Long postId, Member member) {
+        return null;
+    }
+
+    // 요청한 사용자가 해당 게시글의 작성자와 같은지 확인하는 로직
+    private Post getPostIfSameUser(Long postId, Member member) {
+        Post post = postRepository.getByIdOrThrow(postId);
+
+        if (!post.getMember().equals(member)){
+            throw new PostException(ErrorCode.NOT_MATCH_USER);
         }
 
-        Post post = new Post();
-        post.setTitle(postRequest.title());
-        post.setContent(postRequest.content());
-
-        return postRepository.save(post).getId();
+        return post;
     }
 }
