@@ -6,8 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import project.personalproject.domain.member.dto.MemberInfo;
+import project.personalproject.domain.member.entity.Member;
 import project.personalproject.domain.member.entity.Role;
+import project.personalproject.domain.member.repository.MemberRepository;
 import project.personalproject.global.security.jwt.JwtService;
+import project.personalproject.global.security.jwt.JwtUtil;
 import project.personalproject.global.security.service.TokenResponseUtil;
 
 
@@ -22,13 +25,17 @@ import java.util.UUID;
 public class JwtServiceImpl implements JwtService {
     private final SecretKey secretKey;
     private final TokenResponseUtil tokenResponseUtil;
+    private final JwtUtil jwtUtil;
+    private final MemberRepository memberRepository;
 
-    public JwtServiceImpl(@Value("${spring.jwt.secret}") String secret, TokenResponseUtil tokenResponseUtil) {
+    public JwtServiceImpl(@Value("${spring.jwt.secret}") String secret, TokenResponseUtil tokenResponseUtil, JwtUtil jwtUtil, MemberRepository memberRepository) {
         secretKey = new SecretKeySpec(
                 secret.getBytes(StandardCharsets.UTF_8),
                 Jwts.SIG.HS256.key().build().getAlgorithm()
         );
         this.tokenResponseUtil = tokenResponseUtil;
+        this.jwtUtil = jwtUtil;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -83,5 +90,12 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String generateNewRefreshToken() {
         return generateRefreshToken(60 * 60 * 1000L);
+    }
+
+    @Override
+    public Member getMemberFromToken(HttpServletRequest request) {
+        String verifyKey = jwtUtil.getVerifyKey(resolveAccessToken(request));
+
+        return memberRepository.findByVerifyKey(verifyKey);
     }
 }
