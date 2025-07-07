@@ -35,3 +35,5 @@ out/
 
 ### VS Code ###
 .vscode/
+
+backend/src/main/java/project/personalproject/global/security/config/SocialClientRegistration.java
