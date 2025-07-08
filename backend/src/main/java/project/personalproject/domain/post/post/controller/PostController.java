@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.member.entity.Member;
 import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
 import project.personalproject.domain.post.post.dto.request.UpdatePostCommand;
@@ -34,19 +35,18 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<PostResponse> postCreate(@RequestBody CreatePostCommand postRequest,
-                                                   HttpServletRequest request) {
-        return ResponseEntity.ok(postService.createPost(postRequest, getMemberFromToken(request)));
+    public ResponseEntity<PostResponse> postCreate(@RequestPart("postRequest") CreatePostCommand postRequest,
+                                                   @RequestPart("images") List<MultipartFile> images,
+                                                   HttpServletRequest request) throws Exception {
+        return ResponseEntity.ok(postService.createPost(postRequest, getMemberFromToken(request), images));
     }
 
-    @PatchMapping("/update/{postId}")
-    public ResponseEntity<PostResponse> postUpdate(@RequestBody UpdatePostCommand postRequest,
+    @PatchMapping("/{postId}")
+    public ResponseEntity<PostResponse> postUpdate(@RequestPart("postRequest") UpdatePostCommand postRequest,
+                                                   @RequestPart("images") List<MultipartFile> images,
                                                    @PathVariable("postId") Long postId,
                                                    HttpServletRequest request) {
-        return ResponseEntity.ok(postService.updatePost(
-                postId,
-                postRequest,
-                getMemberFromToken(request))
+        return ResponseEntity.ok(postService.updatePost(postId, postRequest, getMemberFromToken(request), images)
         );
     }
 
@@ -55,10 +55,6 @@ public class PostController {
                                                    HttpServletRequest request) {
         return ResponseEntity.ok(postService.deletePost(postId, getMemberFromToken(request)));
     }
-
-
-
-
 
     private Member getMemberFromToken(HttpServletRequest request) {
         return jwtService.getMemberFromToken(request);
