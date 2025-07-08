@@ -1,4 +1,11 @@
 package project.personalproject.domain.post.image.dto.response;
 
-public record PostImageResponse() {
+import java.util.List;
+
+public record PostImageResponse(
+        List<String> imageUrls
+) {
+    public static PostImageResponse of(List<String> imageUrls) {
+        return new PostImageResponse(imageUrls);
+    }
 }

@@ -16,7 +16,7 @@ public class PostImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String imageUrls;
+    private String imageName;
 
     /**
      * 게시글과의 연관관계

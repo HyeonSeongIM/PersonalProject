@@ -1,5 +1,10 @@
 spring:
-  config:
-    activate:
-      on-profile: local
+  profiles:
+    active: local
+    include:
+      - secret
 
+minio:
+  url: http://localhost:9000
+  bucket:
+    name: post-images

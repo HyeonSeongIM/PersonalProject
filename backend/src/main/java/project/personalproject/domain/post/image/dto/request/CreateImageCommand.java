@@ -1,4 +1,4 @@
 package project.personalproject.domain.post.image.dto.request;
 
-public record PostImageRequest() {
+public record CreateImageCommand() {
 }
