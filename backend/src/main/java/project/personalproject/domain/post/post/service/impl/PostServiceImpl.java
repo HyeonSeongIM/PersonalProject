@@ -5,7 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.member.entity.Member;
+import project.personalproject.domain.post.image.service.PostImageService;
 import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
 import project.personalproject.domain.post.post.dto.request.UpdatePostCommand;
 import project.personalproject.domain.post.post.dto.response.PostResponse;
@@ -15,12 +17,15 @@ import project.personalproject.domain.post.post.repository.PostRepository;
 import project.personalproject.domain.post.post.service.PostService;
 import project.personalproject.global.exception.ErrorCode;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 @Transactional
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final PostImageService postImageService;
 
     /**
      * 게시글 생성
@@ -30,9 +35,12 @@ public class PostServiceImpl implements PostService {
      * @return 생성된 게시글 정보
      */
     @Override
-    public PostResponse createPost(CreatePostCommand postRequest, Member member) {
+    public PostResponse createPost(CreatePostCommand postRequest, Member member, List<MultipartFile> images) throws Exception {
+
         Post post = Post.from(postRequest, member);
         postRepository.save(post);
+
+        postImageService.createImages(post,images);
         return PostResponse.of(post);
     }
 
@@ -46,7 +54,7 @@ public class PostServiceImpl implements PostService {
      * @return 수정된 게시글 정보
      */
     @Override
-    public PostResponse updatePost(Long postId, UpdatePostCommand postRequest, Member member) {
+    public PostResponse updatePost(Long postId, UpdatePostCommand postRequest, Member member, List<MultipartFile> images) {
         Post post = getPostIfSameUser(postId, member);
         Post newPost = Post.updateFrom(post, postRequest); // 추후 더티 체킹 방식으로 리팩토링 가능
         postRepository.save(newPost);

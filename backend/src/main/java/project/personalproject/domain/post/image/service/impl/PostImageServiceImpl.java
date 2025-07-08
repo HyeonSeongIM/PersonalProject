@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.post.image.dto.response.PostImageResponse;
+import project.personalproject.domain.post.image.entity.PostImage;
 import project.personalproject.domain.post.image.repository.PostImageRepository;
 import project.personalproject.domain.post.image.service.PostImageService;
+import project.personalproject.domain.post.post.entity.Post;
+import project.personalproject.domain.post.post.repository.PostRepository;
 import project.personalproject.global.miniO.MinioProperties;
 
 import java.io.InputStream;
@@ -26,6 +29,7 @@ public class PostImageServiceImpl implements PostImageService {
     private final MinioClient minioClient;
     private final MinioProperties minioProperties;
     private final PostImageRepository postImageRepository;
+    private final PostRepository postRepository;
 
     /**
      * 게시글 이미지 생성
@@ -33,13 +37,15 @@ public class PostImageServiceImpl implements PostImageService {
      * - 이미지 파일을 MinIO에 업로드하고 presigned URL 반환
      */
     @Override
-    public PostImageResponse createImages(List<MultipartFile> files) throws Exception {
-        // 버킷 존재 여부 확인 후 없으면 생성
-        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(getBucketName()).build())) {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(getBucketName()).build());
-        }
+    public PostImageResponse createImages(Post post, List<MultipartFile> images) throws Exception {
+        createBucketIfNotExists();
 
-        return uploadImage(files);
+        List<String> imageNames = uploadToMinIO(images);
+        savePostImages(post, imageNames);
+
+        List<String> imageUrls = convertToUrls(imageNames);
+        return PostImageResponse.of(imageUrls);
+
     }
 
     /**
@@ -47,9 +53,11 @@ public class PostImageServiceImpl implements PostImageService {
      * - 기존 이미지 삭제 후 새로 업로드
      */
     @Override
-    public PostImageResponse updateImages(Long postId, List<MultipartFile> files) throws Exception {
+    public PostImageResponse updateImages(Long postId, List<MultipartFile> images) throws Exception {
         deleteImages(postId);
-        return uploadImage(files);
+        // 기존 post 조회해서 사용해야 함
+        Post post = postRepository.findByIdOrThrow(postId);
+        return createImages(post, images);
     }
 
     /**
@@ -58,13 +66,13 @@ public class PostImageServiceImpl implements PostImageService {
      */
     @Override
     public void deleteImages(Long postId) throws Exception {
-        List<String> fileNames = getFileName(postId);
+        List<String> imageNames = getImageName(postId);
 
-        for (String file : fileNames) {
+        for (String image : imageNames) {
             minioClient.removeObject(
                     RemoveObjectArgs.builder()
                             .bucket(getBucketName())
-                            .object(file)
+                            .object(image)
                             .build()
             );
         }
@@ -74,73 +82,104 @@ public class PostImageServiceImpl implements PostImageService {
      * 실제 이미지 업로드 로직
      * - 파일명을 UUID로 생성
      * - 파일 스트림을 MinIO에 업로드
-     * - presigned URL을 생성하여 응답 DTO에 담아 반환
      */
-    private PostImageResponse uploadImage(List<MultipartFile> files) throws Exception {
-        List<String> urls = new ArrayList<>();
+    private List<String> uploadToMinIO(List<MultipartFile> images) throws Exception {
+        List<String> imageList = new ArrayList<>();
 
-        for (MultipartFile file : files) {
-            String fileName = newFileName();
+        for (MultipartFile image : images) {
+            String imageName = newImageName();
 
             // 리소스 누수 방지를 위해 try-with-resources 사용
-            try (InputStream fileStream = file.getInputStream()) {
+            try (InputStream imageStream = image.getInputStream()) {
                 PutObjectArgs putObjectArgs = PutObjectArgs.builder()
                         .bucket(getBucketName())
-                        .object(fileName)
-                        .stream(fileStream, file.getSize(), -1)
-                        .contentType(file.getContentType())
+                        .object(imageName)
+                        .stream(imageStream, image.getSize(), -1)
+                        .contentType(image.getContentType())
                         .build();
 
                 minioClient.putObject(putObjectArgs);
             }
 
-            // presigned URL 생성
-            String fileUrl = minioClient.getPresignedObjectUrl(
-                    GetPresignedObjectUrlArgs.builder()
-                            .method(Method.GET)
-                            .bucket(getBucketName())
-                            .object(fileName)
-                            .build()
-            );
-
-            urls.add(fileUrl);
+            imageList.add(imageName);
         }
 
-        return PostImageResponse.of(urls);
+        return imageList;
     }
 
     /**
-     * postId를 기반으로 저장된 presigned URL 리스트를 조회한 뒤
-     * 그 안에서 실제 파일명을 파싱하여 반환
+     * 이미지 엔티티에 저장
+     * @param post
+     * @param imageNames
      */
-    private List<String> getFileName(Long postId) {
+    private void savePostImages(Post post, List<String> imageNames) {
+        for (String name : imageNames) {
+            postImageRepository.save(PostImage.from(post, name));
+        }
+    }
+
+    /**
+     * 이미지 이름을 URL로 변환
+     * @param imageNames
+     * @return
+     * @throws Exception
+     */
+    private List<String> convertToUrls(List<String> imageNames) throws Exception {
+        List<String> urls = new ArrayList<>();
+        for (String name : imageNames) {
+            urls.add(minioClient.getPresignedObjectUrl(
+                    GetPresignedObjectUrlArgs.builder()
+                            .method(Method.GET)
+                            .bucket(getBucketName())
+                            .object(name)
+                            .build()));
+        }
+        return urls;
+    }
+
+    /**
+     * 이미 저장되어 있는 이미지들을 불러옴
+     */
+    private List<String> getImageName(Long postId) {
         List<String> urls = postImageRepository.findUrlsByPostId(postId);
-        List<String> fileNames = new ArrayList<>();
+
+        List<String> imageNames = new ArrayList<>();
 
         for (String url : urls) {
             // URL에서 파일명 추출: ? 파라미터 제거
-            String fileNameWithParams = url.substring(url.lastIndexOf("/") + 1);
-            String fileName = fileNameWithParams.split("\\?")[0];
-            fileNames.add(fileName);
+            String imageNameWithParams = url.substring(url.lastIndexOf("/") + 1);
+            String imageName = imageNameWithParams.split("\\?")[0];
+            imageNames.add(imageName);
         }
 
-        return fileNames;
+        return imageNames;
     }
 
     /**
      * UUID v1 기반으로 고유한 파일명을 생성
      * - "post-" 접두사 + UUID 문자열 (하이픈 제거)
      */
-    private String newFileName() {
+    private String newImageName() {
         TimeBasedGenerator generator = Generators.timeBasedGenerator();
         UUID uuid = generator.generate();
         return "post-" + uuid.toString().toLowerCase().replaceAll("-", "");
     }
 
-    // ❌ final로 선언 시, minioProperties가 아직 초기화되기 전일 수 있으므로 위험
-    // 안전하게 메서드로 분리해서 사용
+     /** final로 선언 시, minioProperties가 아직 초기화되기 전일 수 있으므로 위험
+      *  안전하게 메서드로 분리해서 사용
+      */
     private String getBucketName() {
         return minioProperties.getBucket().getName();
+    }
+
+    /**
+     * 버킷이 존재하지 않으면 생성
+     * @throws Exception
+     */
+    private void createBucketIfNotExists() throws Exception {
+        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(getBucketName()).build())) {
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(getBucketName()).build());
+        }
     }
 
 }
