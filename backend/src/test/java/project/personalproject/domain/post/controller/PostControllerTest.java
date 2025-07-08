@@ -10,7 +10,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import project.personalproject.domain.post.post.controller.PostController;
-import project.personalproject.domain.post.post.dto.request.PostRequest;
+import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
 import project.personalproject.domain.post.post.exception.PostException;
 import project.personalproject.domain.post.post.service.PostService;
 import project.personalproject.global.exception.ErrorCode;
@@ -41,7 +41,7 @@ class PostControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void 게시글_생성_API_200응답_여부_확인() throws Exception {
         // given
-        PostRequest postRequest = new PostRequest("title", "content");
+        CreatePostCommand postRequest = new CreatePostCommand("title", "content");
 
         // when & then
         mockMvc.perform(post("/api/v1/post/create")
@@ -55,9 +55,9 @@ class PostControllerTest {
     @Test
     void 게시글_생성_시_값을_잘_받아오는지_확인() throws Exception {
         // given
-        PostRequest postRequest = new PostRequest("title", "content");
+        CreatePostCommand postRequest = new CreatePostCommand("title", "content");
 
-        given(postService.create(any(PostRequest.class))).willReturn(1L);
+        given(postService.create(any(CreatePostCommand.class))).willReturn(1L);
 
         // when & then
         mockMvc.perform(post("/api/v1/post/create")
@@ -67,15 +67,15 @@ class PostControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1)); // JsonBody 에서 ID 필드가 있을 것이고, 거기서 1일거야 를 가르킴
 
-        verify(postService).create(any(PostRequest.class));
+        verify(postService).create(any(CreatePostCommand.class));
     }
 
     @Test
     void 게시글_생성_시_빈값_에러_처리_여부() throws Exception {
         // given
-        PostRequest postRequest = new PostRequest("", "content");
+        CreatePostCommand postRequest = new CreatePostCommand("", "content");
 
-        given(postService.create(any(PostRequest.class)))
+        given(postService.create(any(CreatePostCommand.class)))
                 .willThrow(new PostException(ErrorCode.INVALID_POST_REQUEST));
 
         // when & then
@@ -85,7 +85,7 @@ class PostControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        verify(postService).create(any(PostRequest.class));
+        verify(postService).create(any(CreatePostCommand.class));
     }
 
 }
