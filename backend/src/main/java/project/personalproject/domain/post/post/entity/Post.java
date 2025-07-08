@@ -6,6 +6,7 @@ import project.personalproject.domain.member.entity.Member;
 import project.personalproject.domain.post.comment.entity.PostComment;
 import project.personalproject.domain.post.image.entity.PostImage;
 import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
+import project.personalproject.domain.post.post.dto.request.UpdatePostCommand;
 import project.personalproject.global.util.BaseTimeEntity;
 
 import java.util.List;
@@ -50,8 +51,20 @@ public class Post extends BaseTimeEntity {
                 .build();
     }
 
-    public static Post updateFrom(Long postId, CreatePostCommand postRequest) {
-
+    /**
+     * 게시글 업데이트 빌더 로직입니다.
+     * - Post에는 원래 등록되어 있는 Post id 값을 가져오기
+     * - UpdatePostCommand 에서 변경 값 가져오기
+     * @param post
+     * @param postRequest
+     * @return
+     */
+    public static Post updateFrom(Post post, UpdatePostCommand postRequest) {
+        return Post.builder()
+                .id(post.getId())
+                .title(postRequest.title())
+                .content(postRequest.content())
+                .build();
     }
 
 }

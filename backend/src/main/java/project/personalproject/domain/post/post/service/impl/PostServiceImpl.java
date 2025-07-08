@@ -31,21 +31,29 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse updatePost(Long postId, UpdatePostCommand postRequest, Member member) {
+        Post post = getPostIfSameUser(postId, member);
 
+        Post newPost = Post.updateFrom(post, postRequest);
 
+        //TODO: update 라는 더티체킹이 있구나 (이거로 리서치 하나 작성)
+        postRepository.save(newPost);
 
-
-        return null;
+        return PostResponse.of(newPost);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PostResponse deletePost(Long postId, Member member) {
-        return null;
+        Post post = getPostIfSameUser(postId, member);
+
+        postRepository.delete(post);
+
+        return PostResponse.of(post);
     }
 
     // 요청한 사용자가 해당 게시글의 작성자와 같은지 확인하는 로직
     private Post getPostIfSameUser(Long postId, Member member) {
-        Post post = postRepository.getByIdOrThrow(postId);
+        Post post = postRepository.findByIdOrThrow(postId);
 
         if (!post.getMember().equals(member)){
             throw new PostException(ErrorCode.NOT_MATCH_USER);

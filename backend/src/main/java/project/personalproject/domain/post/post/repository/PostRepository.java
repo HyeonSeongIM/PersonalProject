@@ -6,7 +6,7 @@ import project.personalproject.domain.post.post.exception.PostException;
 import project.personalproject.global.exception.ErrorCode;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    default Post getByIdOrThrow(Long id) {
+    default Post findByIdOrThrow(Long id) {
         return findById(id).orElseThrow(() -> new PostException(ErrorCode.NOT_FOUND_POST));
     }
 }
