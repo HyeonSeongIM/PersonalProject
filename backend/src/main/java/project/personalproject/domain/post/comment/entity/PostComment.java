@@ -3,6 +3,7 @@ package project.personalproject.domain.post.comment.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import project.personalproject.domain.member.entity.Member;
+import project.personalproject.domain.post.comment.dto.request.CreateCommentCommand;
 import project.personalproject.domain.post.post.entity.Post;
 import project.personalproject.global.util.BaseTimeEntity;
 
@@ -18,7 +19,7 @@ public class PostComment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String content;
+    private String comment;
 
     /**
      * 게시글과의 연관관계
@@ -35,4 +36,12 @@ public class PostComment extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public static PostComment from(CreateCommentCommand command, Member member, Post post) {
+        return PostComment.builder()
+                .comment(command.comment())
+                .post(post)
+                .member(member)
+                .build();
+    }
 }
