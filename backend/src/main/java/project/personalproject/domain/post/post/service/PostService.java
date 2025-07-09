@@ -7,6 +7,7 @@ import project.personalproject.domain.member.entity.Member;
 import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
 import project.personalproject.domain.post.post.dto.request.UpdatePostCommand;
 import project.personalproject.domain.post.post.dto.response.PostResponse;
+import project.personalproject.domain.post.post.dto.response.PostWithCommentsResponse;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface PostService {
     PostResponse deletePost(Long postId, Member member);
 
     // 게시글 하나 가져오기
-    PostResponse getPost(Long postId);
+    PostWithCommentsResponse getPostWithComments(Long postId);
 
     // 게시글 전체 가져오기
     Page<PostResponse> getPostList(Pageable pageable);

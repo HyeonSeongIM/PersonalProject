@@ -7,10 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.member.entity.Member;
+import project.personalproject.domain.post.comment.dto.response.PostCommentResponse;
+import project.personalproject.domain.post.comment.service.PostCommentService;
 import project.personalproject.domain.post.image.service.PostImageService;
 import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
 import project.personalproject.domain.post.post.dto.request.UpdatePostCommand;
 import project.personalproject.domain.post.post.dto.response.PostResponse;
+import project.personalproject.domain.post.post.dto.response.PostWithCommentsResponse;
 import project.personalproject.domain.post.post.entity.Post;
 import project.personalproject.domain.post.post.exception.PostException;
 import project.personalproject.domain.post.post.repository.PostRepository;
@@ -26,6 +29,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final PostImageService postImageService;
+    private final PostCommentService postCommentService;
 
     /**
      * 게시글 생성
@@ -77,19 +81,6 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * 단일 게시글 조회
-     *
-     * @param postId 게시글 ID
-     * @return 게시글 상세 정보
-     */
-    @Transactional(readOnly = true)
-    @Override
-    public PostResponse getPost(Long postId) {
-        Post post = postRepository.findByIdOrThrow(postId);
-        return PostResponse.of(post);
-    }
-
-    /**
      * 게시글 목록 조회 (페이징 지원)
      *
      * @param pageable 페이지 정보
@@ -100,6 +91,31 @@ public class PostServiceImpl implements PostService {
     public Page<PostResponse> getPostList(Pageable pageable) {
         Page<Post> post = postRepository.findAllOrThrow(pageable);
         return PostResponse.pageOf(post);
+    }
+
+    /**
+     * 게시글과 댓글 조회
+     *
+     * @param postId 게시글 ID
+     * @return 게시글과 해당 댓글들
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public PostWithCommentsResponse getPostWithComments(Long postId) {
+        PostResponse post = getPost(postId); // 기존 게시글 단건 조회
+        List<PostCommentResponse> comments = postCommentService.getCommentByPost(postId);
+        return PostWithCommentsResponse.of(post, comments);
+    }
+
+    /**
+     * 단일 게시글 조회
+     *
+     * @param postId 게시글 ID
+     * @return 게시글 상세 정보
+     */
+    private PostResponse getPost(Long postId) {
+        Post post = postRepository.findByIdOrThrow(postId);
+        return PostResponse.of(post);
     }
 
     /**
