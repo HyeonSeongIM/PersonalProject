@@ -23,7 +23,7 @@ public interface PostService {
     PostResponse deletePost(Long postId, Member member);
 
     // 게시글 하나 가져오기
-    PostWithCommentsResponse getPostWithComments(Long postId);
+    PostWithCommentsResponse getPostWithComments(Long postId, Pageable pageable);
 
     // 게시글 전체 가져오기
     Page<PostResponse> getPostList(Pageable pageable);

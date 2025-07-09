@@ -101,9 +101,9 @@ public class PostServiceImpl implements PostService {
      */
     @Transactional(readOnly = true)
     @Override
-    public PostWithCommentsResponse getPostWithComments(Long postId) {
+    public PostWithCommentsResponse getPostWithComments(Long postId, Pageable pageable) {
         PostResponse post = getPost(postId); // 기존 게시글 단건 조회
-        List<PostCommentResponse> comments = postCommentService.getCommentByPost(postId);
+        Page<PostCommentResponse> comments = postCommentService.getCommentByPost(postId, pageable);
         return PostWithCommentsResponse.of(post, comments);
     }
 

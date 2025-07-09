@@ -1,16 +1,18 @@
 package project.personalproject.domain.post.comment.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.personalproject.domain.member.entity.Member;
 import project.personalproject.domain.post.comment.dto.request.CreateCommentCommand;
 import project.personalproject.domain.post.comment.dto.response.PostCommentResponse;
 import project.personalproject.domain.post.comment.entity.PostComment;
+import project.personalproject.domain.post.comment.exception.PostCommentException;
 import project.personalproject.domain.post.comment.repository.PostCommentRepository;
 import project.personalproject.domain.post.comment.service.PostCommentService;
 import project.personalproject.domain.post.post.entity.Post;
-import project.personalproject.domain.post.post.exception.PostException;
 import project.personalproject.domain.post.post.repository.PostRepository;
 import project.personalproject.global.exception.ErrorCode;
 
@@ -56,10 +58,11 @@ public class PostCommentServiceImpl implements PostCommentService {
      * @param postId 게시글 ID
      * @return 댓글 응답 DTO 리스트
      */
+    @Transactional(readOnly = true)
     @Override
-    public List<PostCommentResponse> getCommentByPost(Long postId) {
-        List<PostComment> comments = postCommentRepository.findByPostId(postId);
-        return PostCommentResponse.listOf(comments);
+    public Page<PostCommentResponse> getCommentByPost(Long postId, Pageable pageable) {
+        Page<PostComment> comments = postCommentRepository.findByPostId(postId, pageable);
+        return PostCommentResponse.pageOf(comments);
     }
 
     /**
@@ -81,8 +84,8 @@ public class PostCommentServiceImpl implements PostCommentService {
      */
     private PostComment getPostCommentIfSameUser(Long commentId, Member member) {
         PostComment comment = postCommentRepository.findByIdOrThrow(commentId);
-        if (!comment.getMember().equals(member)) {
-            throw new PostException(ErrorCode.NOT_MATCH_USER);
+        if (!member.getId().equals(comment.getMember().getId())) {
+            throw new PostCommentException(ErrorCode.NOT_MATCH_USER);
         }
         return comment;
     }

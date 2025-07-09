@@ -1,5 +1,6 @@
 package project.personalproject.domain.post.comment.dto.response;
 
+import org.springframework.data.domain.Page;
 import project.personalproject.domain.post.comment.entity.PostComment;
 
 import java.time.LocalDateTime;
@@ -26,5 +27,9 @@ public record PostCommentResponse(
         return postComments.stream()
                 .map(PostCommentResponse::of)
                 .collect(Collectors.toList());
+    }
+
+    public static Page<PostCommentResponse> pageOf(Page<PostComment> postComments) {
+        return postComments.map(PostCommentResponse::of);
     }
 }

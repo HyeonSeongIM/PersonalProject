@@ -48,8 +48,9 @@ public class PostController {
      * @return 게시글 응답 DTO
      */
     @GetMapping("/{postId}")
-    public ResponseEntity<PostWithCommentsResponse> getPost(@PathVariable Long postId) {
-        return ResponseEntity.ok(postService.getPostWithComments(postId));
+    public ResponseEntity<PostWithCommentsResponse> getPost(@PathVariable Long postId,
+                                                            Pageable pageable) {
+        return ResponseEntity.ok(postService.getPostWithComments(postId, pageable));
     }
 
     /**

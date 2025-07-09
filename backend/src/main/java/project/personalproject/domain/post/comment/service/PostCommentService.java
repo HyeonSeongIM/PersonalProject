@@ -1,5 +1,7 @@
 package project.personalproject.domain.post.comment.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import project.personalproject.domain.member.entity.Member;
 import project.personalproject.domain.post.comment.dto.request.CreateCommentCommand;
 import project.personalproject.domain.post.comment.dto.response.PostCommentResponse;
@@ -15,6 +17,6 @@ public interface PostCommentService {
     void deleteComment(Long commentId, Member member);
 
     // 전체 댓글 조회
-    List<PostCommentResponse> getCommentByPost(Long postId);
+    Page<PostCommentResponse> getCommentByPost(Long postId, Pageable pageable);
 
 }
