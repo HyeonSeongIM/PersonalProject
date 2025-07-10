@@ -2,8 +2,8 @@ package project.personalproject.global.security.jwt;
 
 import jakarta.servlet.http.HttpServletRequest;
 import project.personalproject.domain.member.dto.MemberInfo;
+import project.personalproject.domain.member.entity.Member;
 import project.personalproject.domain.member.entity.Role;
-
 
 public interface JwtService {
     String resolveAccessToken(HttpServletRequest request);
@@ -17,4 +17,6 @@ public interface JwtService {
     String generateNewAccessToken(MemberInfo memberInfo);
 
     String generateNewRefreshToken();
+
+    Member getMemberFromToken(HttpServletRequest request);
 }
