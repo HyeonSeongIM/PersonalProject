@@ -2,18 +2,24 @@ package project.personalproject.domain.search.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import project.personalproject.domain.search.entity.Search;
+import project.personalproject.domain.search.repository.SearchRepository;
 import project.personalproject.domain.search.service.AutocompleteService;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class AutocompleteServiceImpl implements AutocompleteService {
+
+    private final SearchRepository searchRepository;
 
     @Override
     public List<String> suggestTitle(String prefix) {
-        return List.of();
+        List<Search> results = searchRepository.findTop10ByTitleStartingWith(prefix);
+
+        return results.stream()
+                .map(Search::getTitle)
+                .toList();
     }
 }
