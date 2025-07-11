@@ -11,5 +11,5 @@ public interface SearchRepository extends ElasticsearchRepository<Search, Long> 
 
     List<Search> findByTitleContainingOrContentContaining(String title, String content);
 
-    List<Search> findByCategoryAndTags(PostCategory category, PostTag tag);
+    List<Search> findByCategoryAndTag(String category, String tag);
 }

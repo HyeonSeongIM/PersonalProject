@@ -2,20 +2,25 @@ package project.personalproject.domain.search.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import project.personalproject.domain.post.post.entity.PostCategory;
 import project.personalproject.domain.post.post.entity.PostTag;
 import project.personalproject.domain.search.entity.Search;
+import project.personalproject.domain.search.repository.SearchRepository;
 import project.personalproject.domain.search.service.SearchService;
 
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
+
+    private final SearchRepository searchRepository;
+
     @Override
     public List<Search> searchByKeyword(String keyword) {
+
+        List<Search> results = searchRepository.findByTitleContainingOrContentContaining(keyword, keyword);
+
         return List.of();
     }
 

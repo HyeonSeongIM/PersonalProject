@@ -7,5 +7,5 @@ public interface SearchIndexService {
 
     void updatePost(Post post);         // 수정
 
-    void deletePost(String postId);     // 삭제
+    void deletePost(Long postId);     // 삭제
 }
