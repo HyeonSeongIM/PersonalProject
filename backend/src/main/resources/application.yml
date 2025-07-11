@@ -6,3 +6,4 @@ server:
 spring:
   profiles:
     include: secret
+    active: local
