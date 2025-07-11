@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.member.entity.Member;
+import project.personalproject.domain.member.service.MemberService;
 import project.personalproject.domain.post.comment.dto.response.PostCommentResponse;
 import project.personalproject.domain.post.comment.service.PostCommentService;
 import project.personalproject.domain.post.image.service.PostImageService;
@@ -18,6 +19,7 @@ import project.personalproject.domain.post.post.entity.Post;
 import project.personalproject.domain.post.post.exception.PostException;
 import project.personalproject.domain.post.post.repository.PostRepository;
 import project.personalproject.domain.post.post.service.PostService;
+import project.personalproject.domain.search.service.SearchIndexService;
 import project.personalproject.global.exception.ErrorCode;
 
 import java.util.List;
@@ -30,6 +32,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final PostImageService postImageService;
     private final PostCommentService postCommentService;
+    private final SearchIndexService searchIndexService;
 
     /**
      * 게시글 생성
@@ -40,11 +43,10 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public PostResponse createPost(CreatePostCommand postRequest, Member member, List<MultipartFile> images) throws Exception {
-
         Post post = Post.from(postRequest, member);
         postRepository.save(post);
-
         postImageService.createImages(post,images);
+        searchIndexService.indexPost(post);
         return PostResponse.of(post);
     }
 
@@ -62,6 +64,7 @@ public class PostServiceImpl implements PostService {
         Post post = getPostIfSameUser(postId, member);
         Post newPost = Post.updateFrom(post, postRequest); // 추후 더티 체킹 방식으로 리팩토링 가능
         postRepository.save(newPost);
+        searchIndexService.updatePost(newPost);
         return PostResponse.of(newPost);
     }
 
@@ -77,6 +80,7 @@ public class PostServiceImpl implements PostService {
     public PostResponse deletePost(Long postId, Member member) {
         Post post = getPostIfSameUser(postId, member);
         postRepository.delete(post);
+        searchIndexService.deletePost(postId);
         return PostResponse.of(post);
     }
 

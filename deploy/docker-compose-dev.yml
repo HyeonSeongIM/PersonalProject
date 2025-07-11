@@ -1,0 +1,38 @@
+services:
+  main-server:
+    image: hyeonseong1010/personal:latest
+    container_name: backend-server
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    volumes:
+      - ./app-data:/app/data
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.main.conf:/etc/nginx/conf.d/default.conf
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    networks:
+      - app-network
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    networks:
+      - app-network
+    depends_on:
+      - nginx
+
+networks:
+  app-network:
+    external: true
