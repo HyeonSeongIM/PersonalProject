@@ -1,14 +1,15 @@
 package project.personalproject.domain.search.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import project.personalproject.domain.post.post.entity.PostCategory;
 import project.personalproject.domain.post.post.entity.PostTag;
+import project.personalproject.domain.search.dto.response.SearchResponse;
 import project.personalproject.domain.search.entity.Search;
 import project.personalproject.domain.search.repository.SearchRepository;
 import project.personalproject.domain.search.service.SearchService;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,15 +18,18 @@ public class SearchServiceImpl implements SearchService {
     private final SearchRepository searchRepository;
 
     @Override
-    public List<Search> searchByKeyword(String keyword) {
+    public Page<SearchResponse> searchByKeyword(String keyword, Pageable pageable) {
 
-        List<Search> results = searchRepository.findByTitleContainingOrContentContaining(keyword, keyword);
+        Page<Search> results = searchRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
 
-        return List.of();
+        return SearchResponse.pageOf(results);
     }
 
     @Override
-    public List<Search> searchByFilter(PostCategory category, PostTag tag, int page, int size) {
-        return List.of();
+    public Page<SearchResponse> searchByFilter(PostCategory category, PostTag tag, Pageable pageable) {
+
+        Page<Search> results = searchRepository.findByCategoryAndTag(category.name(), tag.name(), pageable);
+
+        return SearchResponse.pageOf(results);
     }
 }

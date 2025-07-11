@@ -40,8 +40,8 @@ public class Search {
                 .id(post.getId().toString())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .tag(post.getTag().toString()) // Tag 처리 필요 시 여기에서 처리
-                .category(post.getCategory().toString()) // Category 처리 필요 시 여기에서 처리
+                .tag(post.getTag().name()) // Tag 처리 필요 시 여기에서 처리
+                .category(post.getCategory().name()) // Category 처리 필요 시 여기에서 처리
                 .createdAt(post.getCreateDate().toString())
                 .build();
     }

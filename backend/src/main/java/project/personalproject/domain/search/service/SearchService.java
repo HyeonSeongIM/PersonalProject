@@ -1,13 +1,13 @@
 package project.personalproject.domain.search.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import project.personalproject.domain.post.post.entity.PostCategory;
 import project.personalproject.domain.post.post.entity.PostTag;
-import project.personalproject.domain.search.entity.Search;
-
-import java.util.List;
+import project.personalproject.domain.search.dto.response.SearchResponse;
 
 public interface SearchService {
-    List<Search> searchByKeyword(String keyword);
+    Page<SearchResponse> searchByKeyword(String keyword, Pageable pageable);
 
-    List<Search> searchByFilter(PostCategory category, PostTag tag, int page, int size);
+    Page<SearchResponse> searchByFilter(PostCategory category, PostTag tag, Pageable pageable);
 }

@@ -1,15 +1,13 @@
 package project.personalproject.domain.search.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import project.personalproject.domain.post.post.entity.PostCategory;
-import project.personalproject.domain.post.post.entity.PostTag;
 import project.personalproject.domain.search.entity.Search;
-
-import java.util.List;
 
 public interface SearchRepository extends ElasticsearchRepository<Search, Long> {
 
-    List<Search> findByTitleContainingOrContentContaining(String title, String content);
+    Page<Search> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
 
-    List<Search> findByCategoryAndTag(String category, String tag);
+    Page<Search> findByCategoryAndTag(String category, String tag, Pageable pageable);
 }

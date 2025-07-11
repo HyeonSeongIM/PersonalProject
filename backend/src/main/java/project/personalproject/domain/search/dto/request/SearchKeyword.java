@@ -1,4 +1,6 @@
 package project.personalproject.domain.search.dto.request;
 
-public record SearchRequest() {
+public record SearchKeyword(
+        String keyword
+) {
 }
