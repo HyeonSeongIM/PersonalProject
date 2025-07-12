@@ -7,6 +7,12 @@ spring:
       host: redis-service
       port: 6379
 
+    mongodb:
+      host: mongo-service
+      port: 27017
+      authentication-database: admin
+      database: chat
+
 
 minio:
   url: http://minio-service:9000

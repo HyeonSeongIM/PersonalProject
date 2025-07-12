@@ -76,9 +76,24 @@ services:
     networks:
       - app-network
 
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    container_name: mongo-service
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    networks:
+      - app-network
+
 networks:
   app-network:
 
 volumes:
   minio_data:
   mysql_data:
+  mongo_data:
