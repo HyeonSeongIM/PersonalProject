@@ -22,7 +22,7 @@ public class Member {
      */
     @Id
     @Column(name = "member_id")
-    private UUID id;
+    private Long id;
 
     /**
      * 소셜 별 회원 고유 값
