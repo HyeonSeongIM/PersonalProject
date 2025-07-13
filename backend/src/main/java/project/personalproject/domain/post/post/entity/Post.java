@@ -27,6 +27,10 @@ public class Post extends BaseTimeEntity {
 
     private String content;
 
+    private PostTag tag;
+
+    private PostCategory category;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostComment> comments;
 

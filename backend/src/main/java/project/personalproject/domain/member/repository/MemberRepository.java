@@ -7,7 +7,7 @@ import project.personalproject.domain.member.entity.Member;
 import java.util.UUID;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, UUID> {
+public interface MemberRepository extends JpaRepository<Member, Long> {
     /**
      * 멤버 테이블에서 해당 verifyKey와 동일한 멤버를 반환합니다.
      *
