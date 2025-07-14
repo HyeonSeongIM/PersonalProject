@@ -38,4 +38,9 @@ out/
 
 backend/src/main/java/project/personalproject/global/security/config/SocialClientRegistration.java
 
+
+# 테스트 yml도 제외
+backend/src/test/resources/application.yml
+backend/src/test/resources/application-*.yml
+
 backend/data/**
