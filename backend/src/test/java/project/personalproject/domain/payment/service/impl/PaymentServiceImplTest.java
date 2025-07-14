@@ -118,4 +118,27 @@ class PaymentServiceImplTest {
         verify(pgClient, times(1)).requestPayment(eq(pgRequest)); // 동일성이 아닌 동등성비교
     }
 
+    @Test
+    void 결제_실패_webhook_수신시_상태_FAIL_변경() {
+        // given
+        CreatePaymentCommand paymentCommand = new CreatePaymentCommand(123L, "ORDER123", 10000);
+        Payment payment = Payment.from(paymentCommand);
+        PgWebhookRequest pgWebhookRequest = new PgWebhookRequest("ORDER123", "FAILED");
+
+        when(paymentRepository.findByOrderId("ORDER123")).thenReturn(payment);
+
+        // when
+        Payment updated = paymentService.updatePayment(pgWebhookRequest);
+
+        // then
+        assertEquals(PaymentStatus.FAILED, updated.getStatus());
+
+
+    }
+
+    @Test
+    void 존재하지_않는_orderId_webhook_수신시_예외_발생() {
+
+    }
+
 }
