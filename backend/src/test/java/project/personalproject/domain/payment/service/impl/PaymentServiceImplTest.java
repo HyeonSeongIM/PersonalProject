@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import project.personalproject.domain.payment.dto.request.CreatePaymentCommand;
 import project.personalproject.domain.payment.dto.request.PgRequest;
+import project.personalproject.domain.payment.dto.request.PgWebhookRequest;
 import project.personalproject.domain.payment.dto.response.PgResponse;
 import project.personalproject.domain.payment.entity.Payment;
 import project.personalproject.domain.payment.entity.PaymentStatus;
@@ -66,6 +67,22 @@ class PaymentServiceImplTest {
         verify(pgClient, times(1)).requestPayment(pgRequest);
         verify(paymentRepository, times(1)).save(any());
 
+    }
+
+    @Test
+    void 결제_성공_webhook_수신시_상태_SUCCESS_변경() {
+        // given
+        PgWebhookRequest pgWebhookRequest = new PgWebhookRequest("PG_ORDER_456", "SUCCESS");
+        CreatePaymentCommand paymentCommand = new CreatePaymentCommand(123L, "ORDER123", 10000);
+        Payment payment = Payment.from(paymentCommand);
+
+        when(paymentRepository.findByOrderId("PG_ORDER_456")).thenReturn(payment);
+
+        // when
+        Payment result = paymentService.updatePayment(pgWebhookRequest);
+
+        // then
+        assertEquals(PaymentStatus.SUCCESS, result.getStatus());
     }
 
 }

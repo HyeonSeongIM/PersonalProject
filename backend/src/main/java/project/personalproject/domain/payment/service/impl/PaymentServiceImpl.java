@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.personalproject.domain.payment.dto.request.CreatePaymentCommand;
 import project.personalproject.domain.payment.dto.request.PgRequest;
+import project.personalproject.domain.payment.dto.request.PgWebhookRequest;
 import project.personalproject.domain.payment.entity.Payment;
+import project.personalproject.domain.payment.entity.PaymentStatus;
 import project.personalproject.domain.payment.repository.PaymentRepository;
 import project.personalproject.domain.payment.service.PaymentService;
 import project.personalproject.domain.payment.service.PgClient;
@@ -27,5 +29,14 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = Payment.from(command);
 
         return paymentRepository.save(payment);
+    }
+
+    @Override
+    public Payment updatePayment(PgWebhookRequest request) {
+        Payment payment = paymentRepository.findByOrderId(request.orderId());
+
+        payment.setStatus(PaymentStatus.valueOf(request.status()));
+
+        return payment;
     }
 }
