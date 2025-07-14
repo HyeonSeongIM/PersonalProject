@@ -11,6 +11,7 @@ import project.personalproject.domain.payment.dto.request.PgWebhookRequest;
 import project.personalproject.domain.payment.dto.response.PgResponse;
 import project.personalproject.domain.payment.entity.Payment;
 import project.personalproject.domain.payment.entity.PaymentStatus;
+import project.personalproject.domain.payment.exception.PgException;
 import project.personalproject.domain.payment.repository.PaymentRepository;
 import project.personalproject.domain.payment.service.PgClient;
 
@@ -83,6 +84,21 @@ class PaymentServiceImplTest {
 
         // then
         assertEquals(PaymentStatus.SUCCESS, result.getStatus());
+    }
+
+    @Test
+    void 결제_실패_webhook_수신시_상태_FAILED_변경() {
+        // given
+        PgWebhookRequest pgWebhookRequest = new PgWebhookRequest("PG_ORDER_456", "FAILED");
+        CreatePaymentCommand paymentCommand = new CreatePaymentCommand(123L, "ORDER123", 10000);
+        Payment payment = Payment.from(paymentCommand);
+        when(paymentRepository.findByOrderId("PG_ORDER_456")).thenReturn(payment);
+
+        // when
+        Payment result = paymentService.updatePayment(pgWebhookRequest);
+
+        // then
+        assertEquals(PaymentStatus.FAILED, result.getStatus());
     }
 
 }
