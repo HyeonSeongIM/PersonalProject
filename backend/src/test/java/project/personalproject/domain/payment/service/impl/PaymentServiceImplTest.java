@@ -101,4 +101,21 @@ class PaymentServiceImplTest {
         assertEquals(PaymentStatus.FAILED, result.getStatus());
     }
 
+    @Test
+    void PG_요청_실패시_결제_상태_FAILED_저장() {
+        // given
+        CreatePaymentCommand paymentCommand = new CreatePaymentCommand(123L, "ORDER123", 10000);
+        PgRequest pgRequest = new PgRequest(paymentCommand.orderId(), paymentCommand.amount());
+
+        when(pgClient.requestPayment(any())).thenThrow(PgException.class);
+        when(paymentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // when
+        Payment result = paymentService.createPayment(paymentCommand);
+
+        //then
+        assertEquals(PaymentStatus.FAILED, result.getStatus());
+        verify(pgClient, times(1)).requestPayment(eq(pgRequest)); // 동일성이 아닌 동등성비교
+    }
+
 }

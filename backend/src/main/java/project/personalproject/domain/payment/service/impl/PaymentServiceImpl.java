@@ -8,6 +8,7 @@ import project.personalproject.domain.payment.dto.request.PgRequest;
 import project.personalproject.domain.payment.dto.request.PgWebhookRequest;
 import project.personalproject.domain.payment.entity.Payment;
 import project.personalproject.domain.payment.entity.PaymentStatus;
+import project.personalproject.domain.payment.exception.PgException;
 import project.personalproject.domain.payment.repository.PaymentRepository;
 import project.personalproject.domain.payment.service.PaymentService;
 import project.personalproject.domain.payment.service.PgClient;
@@ -24,9 +25,13 @@ public class PaymentServiceImpl implements PaymentService {
     public Payment createPayment(CreatePaymentCommand command) {
         PgRequest pgRequest = new PgRequest(command.orderId(), command.amount());
 
-        pgClient.requestPayment(pgRequest);
-
         Payment payment = Payment.from(command);
+
+        try {
+            pgClient.requestPayment(pgRequest);
+        } catch (PgException e) {
+            payment.setStatus(PaymentStatus.FAILED);
+        }
 
         return paymentRepository.save(payment);
     }
