@@ -8,10 +8,12 @@ import project.personalproject.domain.payment.dto.request.PgRequest;
 import project.personalproject.domain.payment.dto.request.PgWebhookRequest;
 import project.personalproject.domain.payment.entity.Payment;
 import project.personalproject.domain.payment.entity.PaymentStatus;
+import project.personalproject.domain.payment.exception.PaymentException;
 import project.personalproject.domain.payment.exception.PgException;
 import project.personalproject.domain.payment.repository.PaymentRepository;
 import project.personalproject.domain.payment.service.PaymentService;
 import project.personalproject.domain.payment.service.PgClient;
+import project.personalproject.global.exception.ErrorCode;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +41,10 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment updatePayment(PgWebhookRequest request) {
         Payment payment = paymentRepository.findByOrderId(request.orderId());
+
+        if (payment == null) {
+            throw new PaymentException(ErrorCode.NOT_MATCH_USER);
+        }
 
         payment.setStatus(PaymentStatus.valueOf(request.status()));
 

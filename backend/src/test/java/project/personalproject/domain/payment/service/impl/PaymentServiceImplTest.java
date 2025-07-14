@@ -11,11 +11,13 @@ import project.personalproject.domain.payment.dto.request.PgWebhookRequest;
 import project.personalproject.domain.payment.dto.response.PgResponse;
 import project.personalproject.domain.payment.entity.Payment;
 import project.personalproject.domain.payment.entity.PaymentStatus;
+import project.personalproject.domain.payment.exception.PaymentException;
 import project.personalproject.domain.payment.exception.PgException;
 import project.personalproject.domain.payment.repository.PaymentRepository;
 import project.personalproject.domain.payment.service.PgClient;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -138,6 +140,18 @@ class PaymentServiceImplTest {
 
     @Test
     void 존재하지_않는_orderId_webhook_수신시_예외_발생() {
+        // given
+        PgWebhookRequest pgWebhookRequest = new PgWebhookRequest("WRONG_ORDER123", "SUCCESS");
+
+//        // 실제 테스트하고자 하는 로직은 mock 하면 안됩니다.
+//        // 저장이 목적이 아닌 테스트 코드는 save를 할 필요가 없습니다.
+//        when(paymentRepository.save(any())).thenReturn(payment);
+//        when(paymentService.updatePayment(pgWebhookRequest)).thenReturn(payment);
+        when(paymentRepository.findByOrderId("WRONG_ORDER123")).thenReturn(null);
+
+        // when & then
+        assertThrows(PaymentException.class, () -> paymentService.updatePayment(pgWebhookRequest));
+
 
     }
 
