@@ -13,6 +13,7 @@ import project.personalproject.domain.payment.exception.PgException;
 import project.personalproject.domain.payment.repository.PaymentRepository;
 import project.personalproject.domain.payment.service.PaymentService;
 import project.personalproject.domain.payment.service.PgClient;
+import project.personalproject.domain.payment.service.SettlementService;
 import project.personalproject.global.exception.ErrorCode;
 
 @Service
@@ -22,6 +23,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final PgClient pgClient;
+    private final SettlementService settlementService;
 
     @Override
     public Payment createPayment(CreatePaymentCommand command) {
@@ -47,6 +49,10 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         payment.setStatus(PaymentStatus.valueOf(request.status()));
+
+        paymentRepository.save(payment);
+
+        settlementService.settle(payment);
 
         return payment;
     }

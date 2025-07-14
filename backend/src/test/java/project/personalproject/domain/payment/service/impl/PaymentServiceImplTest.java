@@ -33,6 +33,9 @@ class PaymentServiceImplTest {
     @Mock
     private PgClient pgClient;
 
+    @Mock
+    private SettlementServiceImpl settlementService;
+
     @Test
     void 사용자_결제_요청_후_상태_변환() {
         // given
@@ -153,6 +156,23 @@ class PaymentServiceImplTest {
         assertThrows(PaymentException.class, () -> paymentService.updatePayment(pgWebhookRequest));
 
 
+    }
+
+    @Test
+    void 결제_성공시_정산_요청_수행() {
+        // given
+        Payment payment = new Payment();
+        PgWebhookRequest pgWebhookRequest = new PgWebhookRequest("ORDER123", "SUCCESS");
+
+        when(paymentRepository.findByOrderId("ORDER123")).thenReturn(payment);
+        when(paymentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // when
+        Payment updated = paymentService.updatePayment(pgWebhookRequest);
+
+        // then
+        assertEquals(PaymentStatus.SUCCESS, updated.getStatus());
+        verify(settlementService, times(1)).settle(eq(updated));
     }
 
 }
