@@ -43,4 +43,7 @@ backend/src/main/java/project/personalproject/global/security/config/SocialClien
 backend/src/test/resources/application.yml
 backend/src/test/resources/application-*.yml
 
+backend/src/main/resources/application.yml
+backend/src/main/resources/application-*.yml
+
 backend/data/**
