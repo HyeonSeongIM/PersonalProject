@@ -1,14 +1,5 @@
 services:
-  main-server:
-    image: hyeonseong1010/personal:latest
-    container_name: backend-server
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
-    networks:
-      - app-network
-    volumes:
-      - ./app-data:/app/data
+
 
   mysql:
     image: mysql:8.0
@@ -33,10 +24,10 @@ services:
       - "9000:9000"
       - "9001:9001"
     environment:
-      MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio123
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin123
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"

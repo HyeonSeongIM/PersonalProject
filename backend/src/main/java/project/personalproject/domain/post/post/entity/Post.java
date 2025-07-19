@@ -51,6 +51,8 @@ public class Post extends BaseTimeEntity {
         return Post.builder()
                 .title(postRequest.title())
                 .content(postRequest.content())
+                .tag(PostTag.TechnologyAnalysis)
+                .category(PostCategory.Backend)
                 .member(member)
                 .build();
     }
@@ -68,6 +70,8 @@ public class Post extends BaseTimeEntity {
                 .id(post.getId())
                 .title(postRequest.title())
                 .content(postRequest.content())
+                .tag(PostTag.TechnologyAnalysis)
+                .category(PostCategory.Backend)
                 .build();
     }
 

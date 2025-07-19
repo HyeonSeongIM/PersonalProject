@@ -49,17 +49,16 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
-//        //oauth2
-//        http
-//                .oauth2Login(oauth2 -> oauth2// 커스텀 로그인 페이지
-//                        .failureUrl("/login?error=true")     // 실패 시 리다이렉트
-//                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-//                                .userService(customOAuth2Service)) // 커스텀 OAuth2UserService 설정
-//                        .successHandler(successHandler)
-//                        .clientRegistrationRepository(customClientRegistrationRepo.clientRegistrationRepository()) // yml 파일에 두지 않고 커스텀 형태로 만듬 + 인메모리 형식으로 저장
-//                        .redirectionEndpoint(redirection -> redirection.baseUri("/login/oauth2/code/{registrationId}"))
-//                        .permitAll()
-//                );
+        //oauth2
+        http
+                .oauth2Login(oauth2 -> oauth2// 커스텀 로그인 페이지
+                        .failureUrl("/login?error=true")     // 실패 시 리다이렉트
+                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
+                                .userService(customOAuth2Service)) // 커스텀 OAuth2UserService 설정
+                        .successHandler(successHandler)
+                        .redirectionEndpoint(redirection -> redirection.baseUri("/login/oauth2/code/{registrationId}"))
+                        .permitAll()
+                );
 
         http
                 .addFilterBefore(new JWTFilter(jwtUtil, jwtService, blacklistRepository), UsernamePasswordAuthenticationFilter.class);
@@ -80,7 +79,7 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // 그 외 인증이 필요 없는 경로
-                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/oauth/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/login").permitAll()

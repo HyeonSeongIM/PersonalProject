@@ -7,6 +7,8 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import project.personalproject.domain.post.post.entity.Post;
 
+import java.time.LocalDateTime;
+
 @Document(indexName = "posts") // Elasticsearch 인덱스명
 @Getter
 @Setter
@@ -30,7 +32,7 @@ public class Search {
     @Field(type = FieldType.Keyword)
     private String category; // 카테고리 (enum name 저장)
 
-    private String createdAt; // 작성일 (ISO 문자열)
+    private LocalDateTime createdAt; // 작성일 (ISO 문자열)
 
     /**
      * Post 엔티티로부터 검색용 문서 객체 생성
@@ -45,7 +47,7 @@ public class Search {
                 .content(post.getContent())
                 .tag(post.getTag().name()) // enum → 문자열
                 .category(post.getCategory().name()) // enum → 문자열
-                .createdAt(post.getCreateDate().toString())
+                .createdAt(post.getCreateDate())
                 .build();
     }
 }

@@ -5,6 +5,7 @@ import project.personalproject.domain.post.post.entity.PostCategory;
 import project.personalproject.domain.post.post.entity.PostTag;
 import project.personalproject.domain.search.entity.Search;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,7 @@ public record SearchResponse(
         String content,  // 내용 일부 (예: 100자 요약)
         PostCategory category,        // 카테고리명
         PostTag tag,      // 태그들 (문자열로)
-        String createdAt       // 작성 시간 (선택)
+        LocalDateTime createdAt       // 작성 시간 (선택)
 ) {
 
     public static SearchResponse of(Search search) {

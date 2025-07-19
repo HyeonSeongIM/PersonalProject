@@ -21,6 +21,7 @@ public class Member {
      * 예시 : 123
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 

@@ -26,7 +26,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
@@ -62,12 +62,19 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse updatePost(Long postId, UpdatePostCommand postRequest, Member member, List<MultipartFile> images) {
         Post post = getPostIfSameUser(postId, member);
-        Post newPost = Post.updateFrom(post, postRequest); // 추후 더티 체킹 방식으로 리팩토링 가능
-        postRepository.save(newPost);
-        searchIndexService.updatePost(newPost);
+
+        Post newPost = postRepository.findByIdOrThrow(post.getId());
+
+        newPost.setTitle(postRequest.title());
+        newPost.setContent(postRequest.content());
+
+        searchIndexService.indexPost(newPost);
+
         return PostResponse.of(newPost);
     }
-
+//    Post newPost = Post.updateFrom(post, postRequest); // 추후 더티 체킹 방식으로 리팩토링 가능
+//        postRepository.save(newPost);
+//        searchIndexService.updatePost(newPost);
     /**
      * 게시글 삭제
      * 작성자 본인만 삭제 가능
