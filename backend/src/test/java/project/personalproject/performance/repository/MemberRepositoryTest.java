@@ -3,13 +3,16 @@ package project.personalproject.performance.repository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.util.StopWatch;
 import project.personalproject.domain.member.repository.MemberRepository;
 
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
+
+@DataJpaTest
 @ActiveProfiles("test")
-@SpringBootTest
 @Slf4j
 class MemberRepositoryTest {
 
@@ -17,6 +20,7 @@ class MemberRepositoryTest {
     private MemberRepository memberRepository;
 
     @Test
+    @Sql(scripts = {"/schema.sql", "/test-data.sql"}, executionPhase = BEFORE_TEST_METHOD)
     void 인덱스_설정_안했을_때() {
         // 웜업
         for (int i = 0; i < 10; i++) {
@@ -38,6 +42,7 @@ class MemberRepositoryTest {
     }
 
     @Test
+    @Sql(scripts = {"/schema.sql", "/test-data.sql"}, executionPhase = BEFORE_TEST_METHOD)
     void 인덱스_성능_검증_verifyKey() {
         // 웜업
         for (int i = 0; i < 10; i++) {
