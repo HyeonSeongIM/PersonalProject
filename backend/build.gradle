@@ -84,7 +84,7 @@ dependencies {
     implementation 'com.fasterxml.uuid:java-uuid-generator:4.0.1'
 
     // AOP
-    implementation( "org.springframework.boot:spring-boot-starter-aop")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
 
     runtimeOnly("com.mysql:mysql-connector-j")
 
@@ -119,6 +119,13 @@ dependencies {
 
     // Mongo DB
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+    // JUnit5 + TestContainer
+    testImplementation "org.testcontainers:junit-jupiter:1.18.3"
+
+    // 테스트 코드에서도 Lombok을 사용하기 위한 설정
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
 }
 
