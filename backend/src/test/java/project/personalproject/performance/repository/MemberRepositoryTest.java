@@ -20,7 +20,7 @@ class MemberRepositoryTest {
     private MemberRepository memberRepository;
 
     @Test
-    @Sql(scripts = {"/schema.sql", "/test-data.sql"}, executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/no-index.sql", "/test-data.sql"}, executionPhase = BEFORE_TEST_METHOD)
     void 인덱스_설정_안했을_때() {
         // 웜업
         for (int i = 0; i < 10; i++) {
@@ -42,7 +42,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    @Sql(scripts = {"/schema.sql", "/test-data.sql"}, executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/index.sql", "/test-data.sql"}, executionPhase = BEFORE_TEST_METHOD)
     void 인덱스_성능_검증_verifyKey() {
         // 웜업
         for (int i = 0; i < 10; i++) {
@@ -60,6 +60,27 @@ class MemberRepositoryTest {
         stopWatch.stop();
 
         log.info("[인덱스_성능_검증_verifyKey] 평균시간 = {} ms", stopWatch.getTotalTimeMillis());
+    }
+
+    @Test
+    @Sql(scripts = {"/single-index.sql", "/test-data.sql"}, executionPhase = BEFORE_TEST_METHOD)
+    void 단일_인덱스_설정_Provider () {
+        // 웜업
+        for (int i = 0; i < 10; i++) {
+            memberRepository.findByVerifyKey("kakao" + i);
+        }
+
+        StopWatch stopWatch = new StopWatch("IndexPerf");
+        stopWatch.start("Test");
+
+        // 측정
+        // 100회 호출
+        for (int i = 0; i < 100; i++) {
+            memberRepository.findByVerifyKey("kakao25");
+        }
+        stopWatch.stop();
+
+        log.info("[단일_인덱스_설정_Provider] 평균시간 = {} ms", stopWatch.getTotalTimeMillis());
     }
 
 }
