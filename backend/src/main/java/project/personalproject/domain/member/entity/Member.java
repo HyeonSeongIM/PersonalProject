@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.UUID;
-
 @Entity
 @Getter
 @Setter
@@ -29,7 +27,7 @@ public class Member {
      * 소셜 별 회원 고유 값
      * 예시 : kakao 12345, naver 12345
      */
-    @Column(nullable = false, name = "verifyKey")
+    @Column(nullable = false, unique = true, name = "verifyKey")
     private String verifyKey;
 
     /**
@@ -59,6 +57,7 @@ public class Member {
      * 예시 : 오프라인, 온라인
      */
     @Column(nullable = true, name = "status")
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
 
     /**
