@@ -2,7 +2,10 @@ package project.personalproject.domain.book;
 
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
+import project.personalproject.domain.author.Author;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,12 +14,17 @@ import java.util.Optional;
 public class BookController {
 
     @QueryMapping
-    public static List<Book> books() {
+    public List<Book> books() {
         return Book.books;
     }
 
     @QueryMapping
-    public static Optional<Book> bookById(@Argument Integer id) {
+    public Optional<Book> bookById(@Argument Integer id) {
         return Book.getBookById(id);
+    }
+
+    @SchemaMapping
+    public Optional<Author> author(Book book) {
+        return Author.getAuthorById(book.authorId());
     }
 }
