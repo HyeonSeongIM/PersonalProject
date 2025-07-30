@@ -8,6 +8,8 @@ import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
 import project.personalproject.domain.post.post.dto.request.UpdatePostCommand;
 import project.personalproject.domain.post.post.dto.response.PostResponse;
 import project.personalproject.domain.post.post.dto.response.PostWithCommentsResponse;
+import project.personalproject.domain.post.post.graphql.dto.PostDTO;
+import project.personalproject.domain.post.post.graphql.dto.PostListDTO;
 
 import java.util.List;
 
@@ -26,5 +28,8 @@ public interface PostService {
     PostWithCommentsResponse getPostWithComments(Long postId, Pageable pageable);
 
     // 게시글 전체 가져오기
-    Page<PostResponse> getPostList(Pageable pageable);
+    PostListDTO getPostList(Pageable pageable);
+
+    // 게시글 단건 조회
+    PostDTO getPost(Long postId);
 }

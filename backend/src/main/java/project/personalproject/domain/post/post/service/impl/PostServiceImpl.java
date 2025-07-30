@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.member.entity.Member;
-import project.personalproject.domain.member.service.MemberService;
 import project.personalproject.domain.post.comment.dto.response.PostCommentResponse;
 import project.personalproject.domain.post.comment.service.PostCommentService;
 import project.personalproject.domain.post.image.service.PostImageService;
@@ -17,6 +16,8 @@ import project.personalproject.domain.post.post.dto.response.PostResponse;
 import project.personalproject.domain.post.post.dto.response.PostWithCommentsResponse;
 import project.personalproject.domain.post.post.entity.Post;
 import project.personalproject.domain.post.post.exception.PostException;
+import project.personalproject.domain.post.post.graphql.dto.PostDTO;
+import project.personalproject.domain.post.post.graphql.dto.PostListDTO;
 import project.personalproject.domain.post.post.repository.PostRepository;
 import project.personalproject.domain.post.post.service.PostService;
 import project.personalproject.domain.search.service.SearchIndexService;
@@ -99,9 +100,12 @@ public class PostServiceImpl implements PostService {
      */
     @Transactional(readOnly = true)
     @Override
-    public Page<PostResponse> getPostList(Pageable pageable) {
-        Page<Post> post = postRepository.findAllOrThrow(pageable);
-        return PostResponse.pageOf(post);
+    public PostListDTO getPostList(Pageable pageable) {
+        Page<Post> posts = postRepository.findAllOrThrow(pageable);
+
+        return PostListDTO.of(
+                PostDTO.pageOf(posts)
+        );
     }
 
     /**
@@ -113,7 +117,7 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     @Override
     public PostWithCommentsResponse getPostWithComments(Long postId, Pageable pageable) {
-        PostResponse post = getPost(postId); // 기존 게시글 단건 조회
+        PostDTO post = getPost(postId); // 기존 게시글 단건 조회
         Page<PostCommentResponse> comments = postCommentService.getCommentByPost(postId, pageable);
         return PostWithCommentsResponse.of(post, comments);
     }
@@ -124,9 +128,11 @@ public class PostServiceImpl implements PostService {
      * @param postId 게시글 ID
      * @return 게시글 상세 정보
      */
-    private PostResponse getPost(Long postId) {
+    @Transactional(readOnly = true)
+    @Override
+    public PostDTO getPost(Long postId) {
         Post post = postRepository.findByIdOrThrow(postId);
-        return PostResponse.of(post);
+        return PostDTO.of(post);
     }
 
     /**

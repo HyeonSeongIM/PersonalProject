@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.personalproject.domain.member.entity.Member;
+import project.personalproject.domain.post.comment.dto.PostCommentDTO;
 import project.personalproject.domain.post.comment.dto.request.CreateCommentCommand;
 import project.personalproject.domain.post.comment.dto.response.PostCommentResponse;
 import project.personalproject.domain.post.comment.entity.PostComment;
@@ -60,9 +61,12 @@ public class PostCommentServiceImpl implements PostCommentService {
      */
     @Transactional(readOnly = true)
     @Override
-    public Page<PostCommentResponse> getCommentByPost(Long postId, Pageable pageable) {
+    public List<PostCommentDTO> getCommentByPost(Long postId, Pageable pageable) {
         Page<PostComment> comments = postCommentRepository.findByPostId(postId, pageable);
-        return PostCommentResponse.pageOf(comments);
+
+        List<PostComment> postCommentDTOS = comments.getContent();
+
+        return PostCommentDTO.listOf(comments);
     }
 
     /**

@@ -1,20 +1,8 @@
 type Query{
     books: [Book]
     bookById(id:Int): Book
-    postList(page: Int!, size: Int!): PostList
-    post(id: ID): Post
-}
-
-type Book {
-    id: ID
-    name: String
-    pageCount: Int
-    author: Author
-}
-
-type Author {
-    id: ID
-    name: String
+    getPostList(page: Int = 0, size: Int = 12): PostList
+    getPost(id: ID): Post
 }
 
 type PostList {
@@ -23,6 +11,17 @@ type PostList {
     totalElements: Int!
     number: Int!
     size: Int!
+}
+
+type Post {
+    id: ID!
+    title: String!
+    content: String!
+    member: Member!
+    images(page: Int = 0, size: Int = 1): [PostImageList]!
+    comments(page: Int = 0, size: Int = 5): [PostCommentList]!
+    createdAt: String!
+    updatedAt: String
 }
 
 type PostImageList {
@@ -41,20 +40,9 @@ type PostCommentList {
     size: Int!
 }
 
-type Post {
-    id: ID!
-    title: String!
-    content: String!
-    member: Member!
-    images: [PostImage]!
-    comments: [PostComment]!
-    createdAt: String!
-    updatedAt: String
-}
-
 type PostImage {
     id: ID
-    imageUrl: String
+    imageName: String
 }
 
 type PostComment {
@@ -66,4 +54,17 @@ type PostComment {
 type Member {
     id: ID!
     name: String!
+}
+
+
+type Book {
+    id: ID
+    name: String
+    pageCount: Int
+    author: Author
+}
+
+type Author {
+    id: ID
+    name: String
 }
