@@ -2,8 +2,6 @@ package project.personalproject.domain.post.post.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +13,6 @@ import project.personalproject.domain.post.comment.service.PostCommentService;
 import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
 import project.personalproject.domain.post.post.dto.request.UpdatePostCommand;
 import project.personalproject.domain.post.post.dto.response.PostResponse;
-import project.personalproject.domain.post.post.dto.response.PostWithCommentsResponse;
 import project.personalproject.domain.post.post.service.PostService;
 import project.personalproject.global.security.jwt.JwtService;
 
@@ -29,29 +26,6 @@ public class PostController {
     private final PostService postService;
     private final PostCommentService postCommentService;
     private final JwtService jwtService;
-
-    /**
-     * 게시글 목록 조회 (페이징)
-     *
-     * @param pageable 페이징 정보
-     * @return 게시글 리스트 (페이지 형태)
-     */
-    @GetMapping("/list")
-    public ResponseEntity<Page<PostResponse>> getPostList(Pageable pageable) {
-        return ResponseEntity.ok(postService.getPostList(pageable));
-    }
-
-    /**
-     * 단일 게시글 상세 조회
-     *
-     * @param postId 게시글 ID
-     * @return 게시글 응답 DTO
-     */
-    @GetMapping("/{postId}")
-    public ResponseEntity<PostWithCommentsResponse> getPost(@PathVariable Long postId,
-                                                            Pageable pageable) {
-        return ResponseEntity.ok(postService.getPostWithComments(postId, pageable));
-    }
 
     /**
      * 게시글 생성

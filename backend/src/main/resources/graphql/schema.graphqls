@@ -1,6 +1,4 @@
 type Query{
-    books: [Book]
-    bookById(id:Int): Book
     getPostList(page: Int = 0, size: Int = 12): PostList
     getPost(id: ID): Post
 }
@@ -54,17 +52,4 @@ type PostComment {
 type Member {
     id: ID!
     name: String!
-}
-
-
-type Book {
-    id: ID
-    name: String
-    pageCount: Int
-    author: Author
-}
-
-type Author {
-    id: ID
-    name: String
 }
