@@ -16,8 +16,8 @@ type Post {
     title: String!
     content: String!
     member: Member!
-    images(page: Int = 0, size: Int = 1): [PostImageList]!
-    comments(page: Int = 0, size: Int = 5): [PostCommentList]!
+    images(page: Int = 0, size: Int = 1): PostImageList!
+    comments(page: Int = 0, size: Int = 5): PostCommentList!
     createdAt: String!
     updatedAt: String
 }

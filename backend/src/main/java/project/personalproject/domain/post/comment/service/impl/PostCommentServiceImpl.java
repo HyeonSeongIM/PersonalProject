@@ -53,6 +53,7 @@ public class PostCommentServiceImpl implements PostCommentService {
         postCommentRepository.delete(postComment);
     }
 
+    // TODO: 이거 제네릭 타입 일치시켜야함
     /**
      * 게시글에 달린 댓글 전체 조회
      *

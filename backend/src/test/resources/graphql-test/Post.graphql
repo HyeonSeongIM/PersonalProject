@@ -1,0 +1,37 @@
+query getPost($id: ID!) {
+    getPost(id: $id) {
+        id
+        title
+        content
+        member { id }
+        images {
+            postImage { id imageName }
+            totalPages
+            totalElements
+            number
+            size
+        }
+        comments {
+            postComment { id comment member { id name } }
+            totalPages
+            totalElements
+            number
+            size
+        }
+        createdAt
+        updatedAt
+    }
+}
+
+query getPostList {
+    getPostList {
+        posts {
+            id
+            title
+        }
+        totalPages
+        totalElements
+        number
+        size
+    }
+}

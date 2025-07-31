@@ -5,6 +5,8 @@ import project.personalproject.domain.member.entity.Member;
 import project.personalproject.domain.post.comment.entity.PostComment;
 import project.personalproject.domain.post.image.entity.PostImage;
 import project.personalproject.domain.post.post.entity.Post;
+import project.personalproject.domain.post.post.entity.PostCategory;
+import project.personalproject.domain.post.post.entity.PostTag;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +19,8 @@ public record PostDTO(
         Member member,
         List<PostImage> images,
         List<PostComment> comments,
+        PostCategory category,
+        PostTag postTag,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
@@ -34,6 +38,8 @@ public record PostDTO(
                 post.getMember(),
                 post.getImages(),
                 post.getComments(),
+                post.getCategory(),
+                post.getTag(),
                 post.getCreateDate(),
                 post.getModifyDate()
         );
