@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.post.image.dto.PostImageDTO;
+import project.personalproject.domain.post.image.dto.PostImageListDTO;
 import project.personalproject.domain.post.image.dto.response.PostImageResponse;
 import project.personalproject.domain.post.image.entity.PostImage;
 import project.personalproject.domain.post.image.repository.PostImageRepository;
@@ -38,12 +39,10 @@ public class PostImageServiceImpl implements PostImageService {
      * 이미지 이름 프론트엔드에 반환
      */
     @Override
-    public List<PostImageDTO> getPostImageByPostId(Long id, Pageable pageable) {
+    public PostImageListDTO getPostImageByPostId(Long id, Pageable pageable) {
         Page<PostImage> postImages = postImageRepository.findByPostId(id, pageable);
 
-        List<PostImage> postLists = postImages.getContent();
-
-        return PostImageDTO.listOf(postLists);
+        return PostImageListDTO.of(postImages);
     }
 
     /**

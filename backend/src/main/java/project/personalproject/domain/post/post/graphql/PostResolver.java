@@ -7,8 +7,10 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 import project.personalproject.domain.post.comment.dto.PostCommentDTO;
+import project.personalproject.domain.post.comment.dto.PostCommentListDTO;
 import project.personalproject.domain.post.comment.service.PostCommentService;
 import project.personalproject.domain.post.image.dto.PostImageDTO;
+import project.personalproject.domain.post.image.dto.PostImageListDTO;
 import project.personalproject.domain.post.image.service.PostImageService;
 import project.personalproject.domain.post.post.dto.PostDTO;
 import project.personalproject.domain.post.post.dto.PostListDTO;
@@ -25,28 +27,28 @@ public class PostResolver {
     private final PostCommentService postCommentService;
 
     @QueryMapping
-    public PostDTO getPost(@Argument long id) {
-        return postService.getPost(id);
-    }
-
-    @QueryMapping
     public PostListDTO getPostList(@Argument int page,
                                    @Argument int size) {
         return postService.getPostList(PageRequest.of(page, size));
     }
 
+    @QueryMapping
+    public PostDTO getPost(@Argument long id) {
+        return postService.getPost(id);
+    }
+
     @SchemaMapping(typeName = "PostDTO", field = "images")
-    public List<PostImageDTO> getPostImage(PostDTO post,
-                                           @Argument int page,
-                                           @Argument int size) {
+    public PostImageListDTO getPostImages(PostDTO post,
+                                          @Argument int page,
+                                          @Argument int size) {
         return postImageService.getPostImageByPostId(post.id(), PageRequest.of(page, size));
     }
 
     @SchemaMapping(typeName = "PostDTO", field = "comments")
-    public List<PostCommentDTO> getPostComments(PostDTO post,
-                                                @Argument int page,
-                                                @Argument int size) {
-        return postCommentService.getCommentByPost(post.id(), PageRequest.of(page, size));
+    public PostCommentListDTO getPostComments(PostDTO post,
+                                              @Argument int page,
+                                              @Argument int size) {
+        return postCommentService.getCommentByPostId(post.id(), PageRequest.of(page, size));
     }
 
 }
