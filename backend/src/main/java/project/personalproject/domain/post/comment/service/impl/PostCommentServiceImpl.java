@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.personalproject.domain.member.entity.Member;
-import project.personalproject.domain.post.comment.dto.PostCommentDTO;
 import project.personalproject.domain.post.comment.dto.PostCommentListDTO;
 import project.personalproject.domain.post.comment.dto.request.CreateCommentCommand;
 import project.personalproject.domain.post.comment.dto.response.PostCommentResponse;
@@ -17,8 +16,6 @@ import project.personalproject.domain.post.comment.service.PostCommentService;
 import project.personalproject.domain.post.post.entity.Post;
 import project.personalproject.domain.post.post.repository.PostRepository;
 import project.personalproject.global.exception.ErrorCode;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +52,7 @@ public class PostCommentServiceImpl implements PostCommentService {
     }
 
     // TODO: 이거 제네릭 타입 일치시켜야함
+
     /**
      * 게시글에 달린 댓글 전체 조회
      *

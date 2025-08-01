@@ -6,17 +6,13 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
-import project.personalproject.domain.post.comment.dto.PostCommentDTO;
 import project.personalproject.domain.post.comment.dto.PostCommentListDTO;
 import project.personalproject.domain.post.comment.service.PostCommentService;
-import project.personalproject.domain.post.image.dto.PostImageDTO;
 import project.personalproject.domain.post.image.dto.PostImageListDTO;
 import project.personalproject.domain.post.image.service.PostImageService;
 import project.personalproject.domain.post.post.dto.PostDTO;
 import project.personalproject.domain.post.post.dto.PostListDTO;
 import project.personalproject.domain.post.post.service.PostService;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
