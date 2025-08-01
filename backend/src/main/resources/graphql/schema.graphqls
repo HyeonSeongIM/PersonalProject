@@ -16,8 +16,8 @@ type PostDTO {
     title: String!
     content: String!
     member: Member!
-    images(page: Int = 0, size: Int = 1): PostImageListDTO!
-    comments(page: Int = 0, size: Int = 5): PostCommentListDTO!
+    images(page: Int = 0, size: Int = 1): PostImageListDTO
+    comments(page: Int = 0, size: Int = 5): PostCommentListDTO
     createdAt: String!
     updatedAt: String
 }

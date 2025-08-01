@@ -120,7 +120,7 @@ class PostResolverTest {
                 postDTOList, 5, 2, 0, 1
         );
 
-        when(postService.getPostList(PageRequest.of(0,1))).thenReturn(postListDTO);
+        when(postService.getPostList(PageRequest.of(0,12))).thenReturn(postListDTO);
 
         // when
         graphQlTester.documentName("Post")
@@ -134,5 +134,4 @@ class PostResolverTest {
                 });
 
     }
-
 }
