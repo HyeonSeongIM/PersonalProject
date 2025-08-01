@@ -10,8 +10,8 @@ import project.personalproject.domain.post.comment.dto.PostCommentDTO;
 import project.personalproject.domain.post.comment.service.PostCommentService;
 import project.personalproject.domain.post.image.dto.PostImageDTO;
 import project.personalproject.domain.post.image.service.PostImageService;
-import project.personalproject.domain.post.post.graphql.dto.PostDTO;
-import project.personalproject.domain.post.post.graphql.dto.PostListDTO;
+import project.personalproject.domain.post.post.dto.PostDTO;
+import project.personalproject.domain.post.post.dto.PostListDTO;
 import project.personalproject.domain.post.post.service.PostService;
 
 import java.util.List;
@@ -35,14 +35,14 @@ public class PostResolver {
         return postService.getPostList(PageRequest.of(page, size));
     }
 
-    @SchemaMapping(typeName = "Post", field = "images")
+    @SchemaMapping(typeName = "PostDTO", field = "images")
     public List<PostImageDTO> getPostImage(PostDTO post,
                                            @Argument int page,
                                            @Argument int size) {
         return postImageService.getPostImageByPostId(post.id(), PageRequest.of(page, size));
     }
 
-    @SchemaMapping(typeName = "Post", field = "comments")
+    @SchemaMapping(typeName = "PostDTO", field = "comments")
     public List<PostCommentDTO> getPostComments(PostDTO post,
                                                 @Argument int page,
                                                 @Argument int size) {

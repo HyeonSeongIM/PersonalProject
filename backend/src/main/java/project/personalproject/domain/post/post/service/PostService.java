@@ -6,8 +6,8 @@ import project.personalproject.domain.member.entity.Member;
 import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
 import project.personalproject.domain.post.post.dto.request.UpdatePostCommand;
 import project.personalproject.domain.post.post.dto.response.PostResponse;
-import project.personalproject.domain.post.post.graphql.dto.PostDTO;
-import project.personalproject.domain.post.post.graphql.dto.PostListDTO;
+import project.personalproject.domain.post.post.dto.PostDTO;
+import project.personalproject.domain.post.post.dto.PostListDTO;
 
 import java.util.List;
 

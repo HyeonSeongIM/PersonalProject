@@ -1,4 +1,4 @@
-package project.personalproject.domain.post.post.graphql.dto;
+package project.personalproject.domain.post.post.dto;
 
 import org.springframework.data.domain.Page;
 import project.personalproject.domain.member.entity.Member;

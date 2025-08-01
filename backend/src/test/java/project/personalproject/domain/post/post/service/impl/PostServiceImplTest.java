@@ -14,7 +14,7 @@ import project.personalproject.domain.post.image.entity.PostImage;
 import project.personalproject.domain.post.post.entity.Post;
 import project.personalproject.domain.post.post.entity.PostCategory;
 import project.personalproject.domain.post.post.entity.PostTag;
-import project.personalproject.domain.post.post.graphql.dto.PostDTO;
+import project.personalproject.domain.post.post.dto.PostDTO;
 import project.personalproject.domain.post.post.repository.PostRepository;
 
 import java.util.Arrays;
