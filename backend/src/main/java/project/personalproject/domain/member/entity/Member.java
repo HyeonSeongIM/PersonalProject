@@ -10,7 +10,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "Member")
+@Table(
+        name = "Member",
+        indexes = {
+                @Index(
+                        name = "idx_member_verify_key",  // 인덱스 이름
+                        columnList = "verify_key"         // 컬럼 이름 (JPA 매핑된 이름)
+                )
+        }
+)
 @Schema(name = "유저 정보", description = "유저 정보를 기록하는 엔티티입니다.")
 public class Member {
 
@@ -27,7 +35,7 @@ public class Member {
      * 소셜 별 회원 고유 값
      * 예시 : kakao 12345, naver 12345
      */
-    @Column(nullable = false, unique = true, name = "verifyKey")
+    @Column(nullable = false, name = "verify_key")
     private String verifyKey;
 
     /**

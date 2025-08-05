@@ -42,7 +42,6 @@ public class JwtServiceImpl implements JwtService {
     public String resolveAccessToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            log.info("[resolveToken]  bearer 토큰 추출 : {}", bearerToken.substring(7).trim());
             return bearerToken.substring(7).trim(); // "Bearer " 이후의 토큰 값만 가져옴
         }
         return null;

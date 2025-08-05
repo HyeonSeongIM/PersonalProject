@@ -5,20 +5,28 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
+import project.personalproject.domain.member.entity.Role;
 import project.personalproject.domain.member.repository.MemberRepository;
+import project.personalproject.global.security.jwt.JwtService;
+
+import java.util.Date;
 
 @SpringBootTest
-@ActiveProfiles("local")
+@ActiveProfiles("test")
 @Slf4j
 public class MemberIndexPerformanceTest {
 
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private JwtService jwtService;
+
     @Test
-    @DisplayName("인덱스 미 적용")
-    void not_index_repository() {
+    @DisplayName("레포에서 단순 verifyKey 찾기")
+    void find_verifyKey_to_repository() {
         // given
         String provider = "naver";
 
@@ -40,5 +48,36 @@ public class MemberIndexPerformanceTest {
 
         // then
         log.info("[not_index_repository] Total time: " + (end - start) + "ms");
+    }
+
+    @Test
+    @DisplayName("헤더에서 jwt 토큰 추출 후 멤버 반환")
+    void jwt_parse_verifyKey_by_header() {
+        // given
+        String verifyKey = "google20001";
+
+        String jwtToken = jwtService.generateAccessToken("access", verifyKey, "user70001", "user70001@example.com", Role.USER, (long) (100 * 100 * 60 * 1));
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("Authorization", "Bearer " + jwtToken);
+
+        // warm-up
+        for (int i = 0; i < 100; i++) {
+            jwtService.getMemberFromToken(request);
+        }
+
+        // when & then
+        log.info("[jwt_parse_verifyKey_by_header] Test Start");
+        long start = new Date().getTime();
+
+        for (int i = 0; i < 10000; i++) {
+            jwtService.getMemberFromToken(request);
+        }
+
+        log.info("[jwt_parse_verifyKey_by_header] Test End");
+        long end = new Date().getTime();
+
+        // then
+        log.info("[jwt_parse_verifyKey_by_header] Total time: " + (end - start) + "ms");
     }
 }
