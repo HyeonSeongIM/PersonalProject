@@ -7,14 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.member.entity.Member;
-import project.personalproject.domain.member.service.MemberService;
-import project.personalproject.domain.post.comment.dto.response.PostCommentResponse;
-import project.personalproject.domain.post.comment.service.PostCommentService;
 import project.personalproject.domain.post.image.service.PostImageService;
+import project.personalproject.domain.post.post.dto.PostDTO;
+import project.personalproject.domain.post.post.dto.PostListDTO;
 import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
 import project.personalproject.domain.post.post.dto.request.UpdatePostCommand;
 import project.personalproject.domain.post.post.dto.response.PostResponse;
-import project.personalproject.domain.post.post.dto.response.PostWithCommentsResponse;
 import project.personalproject.domain.post.post.entity.Post;
 import project.personalproject.domain.post.post.exception.PostException;
 import project.personalproject.domain.post.post.repository.PostRepository;
@@ -31,7 +29,6 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final PostImageService postImageService;
-    private final PostCommentService postCommentService;
     private final SearchIndexService searchIndexService;
 
     /**
@@ -45,7 +42,7 @@ public class PostServiceImpl implements PostService {
     public PostResponse createPost(CreatePostCommand postRequest, Member member, List<MultipartFile> images) throws Exception {
         Post post = Post.from(postRequest, member);
         postRepository.save(post);
-        postImageService.createImages(post,images);
+        postImageService.createImages(post, images);
         searchIndexService.indexPost(post);
         return PostResponse.of(post);
     }
@@ -75,6 +72,7 @@ public class PostServiceImpl implements PostService {
 //    Post newPost = Post.updateFrom(post, postRequest); // 추후 더티 체킹 방식으로 리팩토링 가능
 //        postRepository.save(newPost);
 //        searchIndexService.updatePost(newPost);
+
     /**
      * 게시글 삭제
      * 작성자 본인만 삭제 가능
@@ -99,23 +97,12 @@ public class PostServiceImpl implements PostService {
      */
     @Transactional(readOnly = true)
     @Override
-    public Page<PostResponse> getPostList(Pageable pageable) {
-        Page<Post> post = postRepository.findAllOrThrow(pageable);
-        return PostResponse.pageOf(post);
-    }
+    public PostListDTO getPostList(Pageable pageable) {
+        Page<Post> posts = postRepository.findAllOrThrow(pageable);
 
-    /**
-     * 게시글과 댓글 조회
-     *
-     * @param postId 게시글 ID
-     * @return 게시글과 해당 댓글들
-     */
-    @Transactional(readOnly = true)
-    @Override
-    public PostWithCommentsResponse getPostWithComments(Long postId, Pageable pageable) {
-        PostResponse post = getPost(postId); // 기존 게시글 단건 조회
-        Page<PostCommentResponse> comments = postCommentService.getCommentByPost(postId, pageable);
-        return PostWithCommentsResponse.of(post, comments);
+        return PostListDTO.of(
+                PostDTO.pageOf(posts)
+        );
     }
 
     /**
@@ -124,9 +111,11 @@ public class PostServiceImpl implements PostService {
      * @param postId 게시글 ID
      * @return 게시글 상세 정보
      */
-    private PostResponse getPost(Long postId) {
+    @Transactional(readOnly = true)
+    @Override
+    public PostDTO getPost(Long postId) {
         Post post = postRepository.findByIdOrThrow(postId);
-        return PostResponse.of(post);
+        return PostDTO.of(post);
     }
 
     /**

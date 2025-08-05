@@ -87,6 +87,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/v2/member/**").permitAll()
                         .requestMatchers("/actuator/**", "/metrics/**").permitAll()
 
+                        // graphql 인가 허용
+                        .requestMatchers(
+                                "/graphiql",       // GraphiQL 메인 페이지
+                                "/graphiql/**",    // GraphiQL 내부 JS/CSS
+                                "/graphql",        // GraphQL API 엔드포인트
+                                "/vendor/**",      // GraphiQL 정적 리소스 (키트에 따라 경로가 다를 수 있음)
+                                "/assets/**"       // GraphiQL 기타 리소스)
+                        ).permitAll()
                         // 나머지는 인증 필요
                         .anyRequest().authenticated()
                 );

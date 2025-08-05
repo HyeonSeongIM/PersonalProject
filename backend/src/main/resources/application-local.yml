@@ -1,4 +1,10 @@
 spring:
+  graphql:
+    graphiql:
+      enabled: true
+    http:
+      path: /api/graphql
+
 
   datasource:
     url: jdbc:mysql://localhost:33306/personal?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true

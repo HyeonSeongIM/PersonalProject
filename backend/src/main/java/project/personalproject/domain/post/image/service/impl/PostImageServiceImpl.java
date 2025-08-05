@@ -5,9 +5,12 @@ import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import io.minio.*;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import project.personalproject.domain.post.image.dto.PostImageListDTO;
 import project.personalproject.domain.post.image.dto.response.PostImageResponse;
 import project.personalproject.domain.post.image.entity.PostImage;
 import project.personalproject.domain.post.image.repository.PostImageRepository;
@@ -30,6 +33,16 @@ public class PostImageServiceImpl implements PostImageService {
     private final MinioProperties minioProperties;
     private final PostImageRepository postImageRepository;
     private final PostRepository postRepository;
+
+    /**
+     * 이미지 이름 프론트엔드에 반환
+     */
+    @Override
+    public PostImageListDTO getPostImageByPostId(Long id, Pageable pageable) {
+        Page<PostImage> postImages = postImageRepository.findByPostId(id, pageable);
+
+        return PostImageListDTO.of(postImages);
+    }
 
     /**
      * 게시글 이미지 생성
@@ -109,6 +122,7 @@ public class PostImageServiceImpl implements PostImageService {
 
     /**
      * 이미지 엔티티에 저장
+     *
      * @param post
      * @param imageNames
      */
@@ -120,6 +134,7 @@ public class PostImageServiceImpl implements PostImageService {
 
     /**
      * 이미지 이름을 URL로 변환
+     *
      * @param imageNames
      * @return
      * @throws Exception
@@ -165,15 +180,17 @@ public class PostImageServiceImpl implements PostImageService {
         return "post-" + uuid.toString().toLowerCase().replaceAll("-", "");
     }
 
-     /** final로 선언 시, minioProperties가 아직 초기화되기 전일 수 있으므로 위험
-      *  안전하게 메서드로 분리해서 사용
-      */
+    /**
+     * final로 선언 시, minioProperties가 아직 초기화되기 전일 수 있으므로 위험
+     * 안전하게 메서드로 분리해서 사용
+     */
     private String getBucketName() {
         return minioProperties.getBucket().getName();
     }
 
     /**
      * 버킷이 존재하지 않으면 생성
+     *
      * @throws Exception
      */
     private void createBucketIfNotExists() throws Exception {

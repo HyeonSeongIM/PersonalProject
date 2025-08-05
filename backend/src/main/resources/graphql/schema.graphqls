@@ -1,0 +1,55 @@
+type Query{
+    getPostList(page: Int = 0, size: Int = 12): PostListDTO
+    getPost(id: ID): PostDTO
+}
+
+type PostListDTO {
+    posts: [PostDTO]
+    totalPages: Int!
+    totalElements: Int!
+    number: Int!
+    size: Int!
+}
+
+type PostDTO {
+    id: ID!
+    title: String!
+    content: String!
+    member: Member!
+    images(page: Int = 0, size: Int = 1): PostImageListDTO
+    comments(page: Int = 0, size: Int = 5): PostCommentListDTO
+    createdAt: String!
+    updatedAt: String
+}
+
+type PostImageListDTO {
+    postImage: [PostImageDTO]
+    totalPages: Int!
+    totalElements: Int!
+    number: Int!
+    size: Int!
+}
+
+type PostCommentListDTO {
+    postComment: [PostCommentDTO]
+    totalPages: Int!
+    totalElements: Int!
+    number: Int!
+    size: Int!
+}
+
+type PostImageDTO {
+    id: ID
+    imageName: String
+}
+
+type PostCommentDTO {
+    id: ID
+    comment: String
+    member: Member
+}
+
+type Member {
+    id: ID!
+    name: String!
+}

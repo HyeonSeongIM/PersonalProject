@@ -63,7 +63,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    @Sql(scripts = {"/single-index.sql", "/test-data.sql"}, executionPhase = BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/no-index.sql", "/test-data.sql"}, executionPhase = BEFORE_TEST_METHOD)
     void 단일_인덱스_설정_Provider () {
         // 웜업
         for (int i = 0; i < 10; i++) {
