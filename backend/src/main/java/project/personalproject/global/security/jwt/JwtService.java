@@ -21,4 +21,6 @@ public interface JwtService {
     Member getMemberFromToken(HttpServletRequest request);
 
     Member getMemberFromTokenWithEmail(HttpServletRequest request);
+
+    Member getMemberFromTokenWithKeyAndEmail(HttpServletRequest request);
 }

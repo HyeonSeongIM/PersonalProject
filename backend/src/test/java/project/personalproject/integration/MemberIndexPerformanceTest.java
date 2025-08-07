@@ -66,14 +66,14 @@ public class MemberIndexPerformanceTest {
 
         // when & then
         log.info("[jwt_parse_verifyKey_by_header] Test Start");
-        long start = System.nanoTime();
+        long start = System.currentTimeMillis();
 
         for (int i = 0; i < 10000; i++) {
             jwtService.getMemberFromToken(request);
         }
 
         log.info("[jwt_parse_verifyKey_by_header] Test End");
-        long end = System.nanoTime();
+        long end = System.currentTimeMillis();
 
         // then
         log.info("[jwt_parse_verifyKey_by_header] Total time: " + (end - start));
@@ -92,23 +92,57 @@ public class MemberIndexPerformanceTest {
         // warm-up
 
         for (int i = 0; i < 100; i++) {
-            jwtService.getMemberFromToken(request);
+            jwtService.getMemberFromTokenWithEmail(request);
         }
 
         // when
 
         log.info("[jwt_parse_member_by_email] Test Start");
-        long start = System.nanoTime();
+        long start = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++) {
-            jwtService.getMemberFromToken(request);
+            jwtService.getMemberFromTokenWithEmail(request);
         }
         log.info("[jwt_parse_member_by_email] Test End");
-        long end = System.nanoTime();
+        long end = System.currentTimeMillis();
 
 
         // then
         log.info("[jwt_parse_member_by_email] Total time: " + (end - start));
+    }
 
+    @Test
+    @DisplayName("verifyKey와 email 복합 인덱스")
+    void jwt_parse_member_verifyKey_and_email() {
+        // given
+        String jwtToken = jwtService.generateAccessToken("access", "kakao20000", "user40000", "user40000@example.com", Role.USER, (long) (100 * 100 * 60 * 1));
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("Authorization", "Bearer " + jwtToken);
+
+
+        // warm-up
+
+        for (int i = 0; i < 100; i++) {
+            jwtService.getMemberFromTokenWithKeyAndEmail(request);
+        }
+
+        // when
+
+        log.info("[jwt_parse_member_verifyKey_and_email] Test Start");
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 10000; i++) {
+            jwtService.getMemberFromTokenWithKeyAndEmail(request);
+        }
+        log.info("[jwt_parse_member_verifyKey_and_email] Test End");
+        long end = System.currentTimeMillis();
+
+        // then
+        log.info("[jwt_parse_member_verifyKey_and_email] Total time: " + (end - start));
+    }
+
+    @Test
+    @DisplayName("조인 문에서도 테스트해보기")
+    void table_join_parse_member() {
 
     }
 }

@@ -20,6 +20,10 @@ import lombok.*;
                 @Index(
                         name = "idx_member_email",
                         columnList = "email"
+                ),
+                @Index(
+                        name = "idx_member_verify_key_email",
+                        columnList = "verify_key, email"
                 )
         }
 )
