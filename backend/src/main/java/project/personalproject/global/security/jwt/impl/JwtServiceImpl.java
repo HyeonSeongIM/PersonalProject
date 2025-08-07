@@ -97,4 +97,13 @@ public class JwtServiceImpl implements JwtService {
 
         return memberRepository.findByVerifyKey(verifyKey);
     }
+
+    @Override
+    public Member getMemberFromTokenWithEmail(HttpServletRequest request) {
+        String email = jwtUtil.getEmail(resolveAccessToken(request));
+
+        return memberRepository.findByEmail(email);
+    }
+
+
 }

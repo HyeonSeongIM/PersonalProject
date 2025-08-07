@@ -19,4 +19,6 @@ public interface JwtService {
     String generateNewRefreshToken();
 
     Member getMemberFromToken(HttpServletRequest request);
+
+    Member getMemberFromTokenWithEmail(HttpServletRequest request);
 }

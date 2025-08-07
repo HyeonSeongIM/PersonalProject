@@ -16,6 +16,10 @@ import lombok.*;
                 @Index(
                         name = "idx_member_verify_key",  // 인덱스 이름
                         columnList = "verify_key"         // 컬럼 이름 (JPA 매핑된 이름)
+                ),
+                @Index(
+                        name = "idx_member_email",
+                        columnList = "email"
                 )
         }
 )

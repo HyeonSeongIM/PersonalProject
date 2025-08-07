@@ -78,4 +78,37 @@ public class MemberIndexPerformanceTest {
         // then
         log.info("[jwt_parse_verifyKey_by_header] Total time: " + (end - start));
     }
+
+    @Test
+    @DisplayName("jwt 토큰 로직 email 인덱싱 결과")
+    void jwt_parse_member_by_email() {
+        // given
+        String jwtToken = jwtService.generateAccessToken("access", "naver20000", "user20000", "user20000@example.com", Role.USER, (long) (100 * 100 * 60 * 1));
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("Authorization", "Bearer " + jwtToken);
+
+
+        // warm-up
+
+        for (int i = 0; i < 100; i++) {
+            jwtService.getMemberFromToken(request);
+        }
+
+        // when
+
+        log.info("[jwt_parse_member_by_email] Test Start");
+        long start = System.nanoTime();
+        for (int i = 0; i < 10000; i++) {
+            jwtService.getMemberFromToken(request);
+        }
+        log.info("[jwt_parse_member_by_email] Test End");
+        long end = System.nanoTime();
+
+
+        // then
+        log.info("[jwt_parse_member_by_email] Total time: " + (end - start));
+
+
+    }
 }
