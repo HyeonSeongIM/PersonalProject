@@ -11,10 +11,8 @@ import project.personalproject.domain.member.entity.Role;
 import project.personalproject.domain.member.repository.MemberRepository;
 import project.personalproject.global.security.jwt.JwtService;
 
-import java.util.Date;
-
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("local")
 @Slf4j
 public class MemberIndexPerformanceTest {
 
@@ -37,14 +35,14 @@ public class MemberIndexPerformanceTest {
 
         // when
         log.info("[not_index_repository] Test Start");
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
 
         for (int i = 0; i < 10000; i++) {
             memberRepository.findByVerifyKey(provider + i);
         }
 
         log.info("[not_index_repository] Test End");
-        long end = System.currentTimeMillis();
+        long end = System.nanoTime();
 
         // then
         log.info("[not_index_repository] Total time: " + (end - start) + "ms");
@@ -68,16 +66,16 @@ public class MemberIndexPerformanceTest {
 
         // when & then
         log.info("[jwt_parse_verifyKey_by_header] Test Start");
-        long start = new Date().getTime();
+        long start = System.nanoTime();
 
         for (int i = 0; i < 10000; i++) {
             jwtService.getMemberFromToken(request);
         }
 
         log.info("[jwt_parse_verifyKey_by_header] Test End");
-        long end = new Date().getTime();
+        long end = System.nanoTime();
 
         // then
-        log.info("[jwt_parse_verifyKey_by_header] Total time: " + (end - start) + "ms");
+        log.info("[jwt_parse_verifyKey_by_header] Total time: " + (end - start));
     }
 }
