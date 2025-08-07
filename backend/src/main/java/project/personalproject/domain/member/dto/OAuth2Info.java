@@ -50,6 +50,8 @@ public class OAuth2Info implements OAuth2User {
         return memberInfo.role();
     }
 
+    public String getProvider() {return memberInfo.provider();}
+
     @Override
     public Map<String, Object> getAttributes() {
         return Map.of();

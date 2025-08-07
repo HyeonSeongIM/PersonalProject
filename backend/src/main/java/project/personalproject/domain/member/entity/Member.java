@@ -24,6 +24,10 @@ import lombok.*;
                 @Index(
                         name = "idx_member_verify_key_email",
                         columnList = "verify_key, email"
+                ),
+                @Index(
+                        name = "idx_member_provider_email",
+                        columnList = "provider, email"
                 )
         }
 )
@@ -60,6 +64,9 @@ public class Member {
     @Column(nullable = false, name = "email")
     private String email;
 
+    @Column(nullable = false, name = "provider")
+    private String provider;
+
     /**
      * 회원 권한
      * 예시 : user, admin, super_admin
@@ -85,10 +92,11 @@ public class Member {
      * @param role
      * @return
      */
-    public static Member from(String verifyKey, String username, String email, Role role) {
+    public static Member from(String verifyKey, String username, String provider, String email, Role role) {
         return Member.builder()
                 .verifyKey(verifyKey)
                 .username(username)
+                .provider(provider)
                 .email(email)
                 .role(role)
                 .status(UserStatus.ONLINE)

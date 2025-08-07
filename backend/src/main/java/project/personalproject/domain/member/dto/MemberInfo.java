@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 public record MemberInfo(
         String verifyKey,
         String username,
+        String provider,
         String email,
         Role role
 
@@ -23,6 +24,7 @@ public record MemberInfo(
         return new MemberInfo(
                 member.getVerifyKey(),
                 member.getUsername(),
+                member.getProvider(),
                 member.getEmail(),
                 member.getRole()
         );
@@ -37,10 +39,11 @@ public record MemberInfo(
      * @param role
      * @return
      */
-    public static MemberInfo to(String verifyKey, String username, String email, Role role) {
+    public static MemberInfo to(String verifyKey, String username, String provider, String email, Role role) {
         return new MemberInfo(
                 verifyKey,
                 username,
+                provider,
                 email,
                 role
         );

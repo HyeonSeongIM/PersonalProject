@@ -89,14 +89,24 @@ public class JwtUtil {
         // 토큰에서 값 추출
         String verifyKey = getVerifyKey(token);
         String username = getUsername(token);
+        String provider = getProvider(token);
         String email = getEmail(token);
         Role role = getRole(token);
 
-        MemberInfo memberInfo = MemberInfo.to(verifyKey, username, email, role);
+        MemberInfo memberInfo = MemberInfo.to(verifyKey, username, provider ,email, role);
 
         OAuth2Info oAuth2Info = new OAuth2Info(memberInfo);
         log.info("[getAuthentication] 인증 절차 완료");
 
         return new UsernamePasswordAuthenticationToken(oAuth2Info, null);
+    }
+
+    public String getProvider(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("provider", String.class);
     }
 }

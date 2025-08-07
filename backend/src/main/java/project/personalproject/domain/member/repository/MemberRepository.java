@@ -1,8 +1,6 @@
 package project.personalproject.domain.member.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import project.personalproject.domain.member.entity.Member;
 
@@ -27,10 +25,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByEmail(String email);
 
     /**
-     * 멤버 테이블에서 해당 email과 verifyKey와 동일한 멤버를 반환한다.
+     * 멤버 테이블에서 해당 email과 verifyKey
      * @param verifyKey
      * @param email
      * @return
      */
     Member findByVerifyKeyAndEmail(String verifyKey, String email);
+
+    Member findByProviderAndEmail(String provider, String email);
 }

@@ -53,11 +53,12 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateAccessToken(String category, String verifyKey, String username, String email, Role role, Long expiredMs) {
+    public String generateAccessToken(String category, String verifyKey, String username, String provider, String email, Role role, Long expiredMs) {
         return Jwts.builder()
                 .claim("category", category)
                 .claim("verifyKey", verifyKey)
                 .claim("username", username)
+                .claim("provider", provider)
                 .claim("email", email)
                 .claim("Role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -82,8 +83,9 @@ public class JwtServiceImpl implements JwtService {
         String username = memberInfo.username();
         String email = memberInfo.email();
         Role role = memberInfo.role();
+        String provider = memberInfo.provider();
 
-        return generateAccessToken("access", verifyKey, username, email, role, 10 * 60 * 1000L);
+        return generateAccessToken("access", verifyKey, username, provider ,email, role, 10 * 60 * 1000L);
     }
 
     @Override
@@ -111,6 +113,14 @@ public class JwtServiceImpl implements JwtService {
         String email = jwtUtil.getEmail(resolveAccessToken(request));
 
         return memberRepository.findByVerifyKeyAndEmail(verifyKey, email);
+    }
+
+    @Override
+    public Member getMemberFromTokenWithProviderAndEmail(HttpServletRequest request) {
+        String provider = jwtUtil.getProvider(resolveAccessToken(request));
+        String email = jwtUtil.getEmail(resolveAccessToken(request));
+
+        return memberRepository.findByProviderAndEmail(provider, email);
     }
 
 

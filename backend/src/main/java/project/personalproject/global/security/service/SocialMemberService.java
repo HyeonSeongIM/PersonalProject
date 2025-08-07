@@ -19,11 +19,12 @@ public class SocialMemberService {
         String verifyKey = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
         String username = oAuth2Response.getName();
         String email = oAuth2Response.getEmail();
+        String provider = oAuth2Response.getProvider();
 
         Member member = memberRepository.findByVerifyKey(verifyKey);
 
         if (member == null) {
-            member = Member.from(verifyKey, username, email, Role.USER);
+            member = Member.from(verifyKey, username, provider ,email, Role.USER);
             memberRepository.save(member);
         }
 

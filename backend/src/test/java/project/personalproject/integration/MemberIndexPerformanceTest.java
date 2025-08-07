@@ -54,7 +54,7 @@ public class MemberIndexPerformanceTest {
         // given
         String verifyKey = "google20001";
 
-        String jwtToken = jwtService.generateAccessToken("access", verifyKey, "user70001", "user70001@example.com", Role.USER, (long) (100 * 100 * 60 * 1));
+        String jwtToken = jwtService.generateAccessToken("access", verifyKey, "user70001", "google","user70001@example.com", Role.USER, (long) (100 * 100 * 60 * 1));
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("Authorization", "Bearer " + jwtToken);
@@ -83,7 +83,7 @@ public class MemberIndexPerformanceTest {
     @DisplayName("jwt 토큰 로직 email 인덱싱 결과")
     void jwt_parse_member_by_email() {
         // given
-        String jwtToken = jwtService.generateAccessToken("access", "naver20000", "user20000", "user20000@example.com", Role.USER, (long) (100 * 100 * 60 * 1));
+        String jwtToken = jwtService.generateAccessToken("access", "naver20000", "user20000", "naver","user20000@example.com", Role.USER, (long) (100 * 100 * 60 * 1));
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("Authorization", "Bearer " + jwtToken);
@@ -114,7 +114,7 @@ public class MemberIndexPerformanceTest {
     @DisplayName("verifyKey와 email 복합 인덱스")
     void jwt_parse_member_verifyKey_and_email() {
         // given
-        String jwtToken = jwtService.generateAccessToken("access", "kakao20000", "user40000", "user40000@example.com", Role.USER, (long) (100 * 100 * 60 * 1));
+        String jwtToken = jwtService.generateAccessToken("access", "kakao20000", "user40000", "kakao","user40000@example.com", Role.USER, (long) (100 * 100 * 60 * 1));
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("Authorization", "Bearer " + jwtToken);
@@ -141,8 +141,32 @@ public class MemberIndexPerformanceTest {
     }
 
     @Test
-    @DisplayName("조인 문에서도 테스트해보기")
-    void table_join_parse_member() {
+    @DisplayName("provider와 email로 복합 인덱스 생성")
+    void jwt_parse_member_provider_and_email() {
+        // given
+        String jwtToken = jwtService.generateAccessToken("access", "kakao20000", "user40000", "kakao","user40000@example.com", Role.USER, (long) (100 * 100 * 60 * 1));
 
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("Authorization", "Bearer " + jwtToken);
+
+
+        // warm-up
+
+        for (int i = 0; i < 100; i++) {
+            jwtService.getMemberFromTokenWithProviderAndEmail(request);
+        }
+
+        // when
+
+        log.info("[jwt_parse_member_provider_and_email] Test Start");
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 10000; i++) {
+            jwtService.getMemberFromTokenWithProviderAndEmail(request);
+        }
+        log.info("[jwt_parse_member_provider_and_email] Test End");
+        long end = System.currentTimeMillis();
+
+        // then
+        log.info("[jwt_parse_member_provider_and_email] Total time: " + (end - start));
     }
 }
