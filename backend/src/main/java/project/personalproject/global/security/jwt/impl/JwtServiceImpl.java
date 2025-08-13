@@ -42,7 +42,6 @@ public class JwtServiceImpl implements JwtService {
     public String resolveAccessToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            log.info("[resolveToken]  bearer 토큰 추출 : {}", bearerToken.substring(7).trim());
             return bearerToken.substring(7).trim(); // "Bearer " 이후의 토큰 값만 가져옴
         }
         return null;
@@ -54,11 +53,12 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateAccessToken(String category, String verifyKey, String username, String email, Role role, Long expiredMs) {
+    public String generateAccessToken(String category, String verifyKey, String username, String provider, String email, Role role, Long expiredMs) {
         return Jwts.builder()
                 .claim("category", category)
                 .claim("verifyKey", verifyKey)
                 .claim("username", username)
+                .claim("provider", provider)
                 .claim("email", email)
                 .claim("Role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -83,8 +83,9 @@ public class JwtServiceImpl implements JwtService {
         String username = memberInfo.username();
         String email = memberInfo.email();
         Role role = memberInfo.role();
+        String provider = memberInfo.provider();
 
-        return generateAccessToken("access", verifyKey, username, email, role, 10 * 60 * 1000L);
+        return generateAccessToken("access", verifyKey, username, provider ,email, role, 10 * 60 * 1000L);
     }
 
     @Override
@@ -98,4 +99,29 @@ public class JwtServiceImpl implements JwtService {
 
         return memberRepository.findByVerifyKey(verifyKey);
     }
+
+    @Override
+    public Member getMemberFromTokenWithEmail(HttpServletRequest request) {
+        String email = jwtUtil.getEmail(resolveAccessToken(request));
+
+        return memberRepository.findByEmail(email);
+    }
+
+    @Override
+    public Member getMemberFromTokenWithKeyAndEmail(HttpServletRequest request) {
+        String verifyKey = jwtUtil.getVerifyKey(resolveAccessToken(request));
+        String email = jwtUtil.getEmail(resolveAccessToken(request));
+
+        return memberRepository.findByVerifyKeyAndEmail(verifyKey, email);
+    }
+
+    @Override
+    public Member getMemberFromTokenWithProviderAndEmail(HttpServletRequest request) {
+        String provider = jwtUtil.getProvider(resolveAccessToken(request));
+        String email = jwtUtil.getEmail(resolveAccessToken(request));
+
+        return memberRepository.findByProviderAndEmail(provider, email);
+    }
+
+
 }

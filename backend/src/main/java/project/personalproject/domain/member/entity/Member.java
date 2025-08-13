@@ -10,7 +10,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "Member")
+@Table(
+        name = "Member",
+        indexes = {
+                @Index(
+                        name = "idx_member_verify_key",
+                        columnList = "verify_key"
+                )
+        }
+)
 @Schema(name = "유저 정보", description = "유저 정보를 기록하는 엔티티입니다.")
 public class Member {
 
@@ -27,7 +35,7 @@ public class Member {
      * 소셜 별 회원 고유 값
      * 예시 : kakao 12345, naver 12345
      */
-    @Column(nullable = false, unique = true, name = "verifyKey")
+    @Column(nullable = false, name = "verify_key")
     private String verifyKey;
 
     /**
@@ -43,6 +51,9 @@ public class Member {
      */
     @Column(nullable = false, name = "email")
     private String email;
+
+    @Column(nullable = false, name = "provider")
+    private String provider;
 
     /**
      * 회원 권한
@@ -69,10 +80,11 @@ public class Member {
      * @param role
      * @return
      */
-    public static Member from(String verifyKey, String username, String email, Role role) {
+    public static Member from(String verifyKey, String username, String provider, String email, Role role) {
         return Member.builder()
                 .verifyKey(verifyKey)
                 .username(username)
+                .provider(provider)
                 .email(email)
                 .role(role)
                 .status(UserStatus.ONLINE)

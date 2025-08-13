@@ -10,7 +10,7 @@ public interface JwtService {
 
     String resolveRefreshToken(HttpServletRequest request);
 
-    String generateAccessToken(String category, String verifyKey, String username, String email, Role role, Long expiredMs);
+    String generateAccessToken(String category, String verifyKey, String username, String provider, String email, Role role, Long expiredMs);
 
     String generateRefreshToken(Long expiredMs);
 
@@ -19,4 +19,10 @@ public interface JwtService {
     String generateNewRefreshToken();
 
     Member getMemberFromToken(HttpServletRequest request);
+
+    Member getMemberFromTokenWithEmail(HttpServletRequest request);
+
+    Member getMemberFromTokenWithKeyAndEmail(HttpServletRequest request);
+
+    Member getMemberFromTokenWithProviderAndEmail(HttpServletRequest request);
 }

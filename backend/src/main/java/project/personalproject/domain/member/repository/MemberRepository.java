@@ -16,4 +16,21 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
      * @return
      */
     Member findByVerifyKey(String verifyKey);
+
+    /**
+     * 멤버 테이블에서 해당 email과 동일한 멤버를 반환한다.
+     * @param email
+     * @return
+     */
+    Member findByEmail(String email);
+
+    /**
+     * 멤버 테이블에서 해당 email과 verifyKey
+     * @param verifyKey
+     * @param email
+     * @return
+     */
+    Member findByVerifyKeyAndEmail(String verifyKey, String email);
+
+    Member findByProviderAndEmail(String provider, String email);
 }
