@@ -14,20 +14,8 @@ import lombok.*;
         name = "Member",
         indexes = {
                 @Index(
-                        name = "idx_member_verify_key",  // 인덱스 이름
-                        columnList = "verify_key"         // 컬럼 이름 (JPA 매핑된 이름)
-                ),
-                @Index(
-                        name = "idx_member_email",
-                        columnList = "email"
-                ),
-                @Index(
-                        name = "idx_member_verify_key_email",
-                        columnList = "verify_key, email"
-                ),
-                @Index(
-                        name = "idx_member_provider_email",
-                        columnList = "provider, email"
+                        name = "idx_member_verify_key",
+                        columnList = "verify_key"
                 )
         }
 )
