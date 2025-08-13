@@ -1,0 +1,32 @@
+@startuml
+actor User as U
+participant "Client" as R
+participant "Spring Boot API" as S
+participant "MinIO" as M
+database "MySQL" as DB
+
+== 1. 이미지 업로드 URL 발급 ==
+U -> R: 새 글 작성(제목/내용/이미지 선택)
+R -> S: POST /posts/images/presign {fileNames[]}
+S -> M: Generate presigned URLs
+M --> S: URLs[]
+S --> R: {urls: [..], uploadKeys: [..]}
+
+loop 각 이미지
+  R -> M: PUT file to presigned URL
+  M --> R: 200 OK
+end
+
+== 2. 게시글 생성 ==
+R -> S: POST /posts {title, content, imageKeys[]}
+activate S
+S -> DB: INSERT INTO post (title, content, authorId, ...)
+DB --> S: postId
+S -> DB: INSERT INTO post_image (post_id, image_name) x N
+DB --> S: OK
+deactivate S
+S --> R: 201 Created {postId}
+
+== 3. 확인 ==
+R --> U: “게시글이 생성되었습니다”
+@enduml
