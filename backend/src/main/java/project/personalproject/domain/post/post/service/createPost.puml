@@ -2,70 +2,44 @@
 actor User as U
 participant "Client" as C
 participant "API Server" as S
-participant "PostService" as PS
-participant "PostImageService" as PIS
+participant "PostService\n(@Transactional REQUIRED)" as PS
+participant "PostImageService\n(@Transactional REQUIRED)" as PIS
+participant "PostImageIoService\n(@Transactional NOT_SUPPORTED)" as PIO #CCCCCC
 database "MySQL" as DB
-database "MinIO" as M
+collections "MinIO" as M
 
 U -> C: 새 글 작성(제목/내용/이미지)
-
-== Post 본문 생성 ==
-C -> S: POST /api/v1/posts (title, content, images)
+C -> S: POST /api/v1/posts {title, content, images[]}
 
 opt Request validation (@Valid DTO)
   S -> S: @NotBlank(title), @Size, 금지어 체크
   alt [invalid]
-    S --> C: 400 ValidationError (field errors)
+    S --> C: 400 ValidationError
     return
   end
 end
 
-S -> PS: 게시글 생성 요청
-PS -> DB: INSERT Post
-DB --> PS: postId
-PS --> S: postId
+== 본문 + 이미지 (한 요청에서 처리) ==
+group TX[createPost() 트랜잭션 시작 - REQUIRED]
+  activate PS
+  S -> PS: 게시글 생성 요청
 
-== 이미지 업로드 ==
+  PS -> DB: INSERT post(...)
+  DB --> PS: postId
 
-opt Request validation
-  S -> S: postId 형식, files 개수 ≤ 5, 확장자/MIME
-  alt [invalid]
-    S --> C: 400 Bad Request
-    return
-  end
-end
+  PS -> PIS: createImages(post, images[])
 
-
-opt Business validation (소유/상태)
-  PIS -> DB: SELECT Post WHERE id=postId
-  DB --> PIS: 결과
-  alt [not found]
-    PIS --> S: NotFound
-    S --> C: 404 Not Found
-    return
-  else [forbidden]
-    PIS --> S: Forbidden
-    S --> C: 403 Forbidden
-    return
-  end
-end
-
-group TX(PostImage)
-  loop 각 파일
-    PIS -> PIS: newFileName()  'ex) posts/{postId}/{uuid}.{ext}
+  loop 트랜잭션 일시정지
+    PIS -> PIS: newFileName()
     PIS -> M: putObject(file, objectKey)
-    M --> PIS: OK (etag)
-    PIS -> DB: INSERT PostImage(postId, imageName)
+    M --> PIS: 200 OK (etag)
+    PIS -> DB: INSERT post_image(postId, imageName)
     DB --> PIS: OK
   end
-  alt [DB constraint violation]
-    PIS --> S: PersistError
-    S --> C: 409/422 ConstraintError
-    break
-  else [OK]
-    PIS --> S: Post{title, content, images}
-    S --> C: 201 Created
-  end
 end
 
+    PIS -> PS: OK
+    PS --> S: PostResponse{ id=postId, ... }
+
+S --> C: 201 Created + PostResponse(+images)
 @enduml
