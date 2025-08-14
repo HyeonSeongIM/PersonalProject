@@ -43,7 +43,6 @@ public class PostServiceImpl implements PostService {
         Post post = Post.from(postRequest, member);
         postRepository.save(post);
         postImageService.createImages(post, images);
-        searchIndexService.indexPost(post);
         return PostResponse.of(post);
     }
 
