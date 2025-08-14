@@ -15,6 +15,9 @@ public enum ErrorCode {
     // 게시글 댓글 에러코드
     NOT_FOUND_COMMENT(200, "해당 댓글을 조회할 수 없습니다.", HttpStatus.NOT_FOUND),
 
+    // 게시판 이미지 에러코드
+    TOO_MANY_FILES(300, "이미지는 최대 5개까지 올릴 수 있습니다.", HttpStatus.BAD_REQUEST),
+
     // 검색 에러 코드
 
     // 결제 에러 코드

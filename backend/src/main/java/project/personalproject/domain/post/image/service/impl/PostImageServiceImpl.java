@@ -13,10 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.post.image.dto.PostImageListDTO;
 import project.personalproject.domain.post.image.dto.response.PostImageResponse;
 import project.personalproject.domain.post.image.entity.PostImage;
+import project.personalproject.domain.post.image.exception.PostImageException;
 import project.personalproject.domain.post.image.repository.PostImageRepository;
 import project.personalproject.domain.post.image.service.PostImageService;
 import project.personalproject.domain.post.post.entity.Post;
 import project.personalproject.domain.post.post.repository.PostRepository;
+import project.personalproject.global.exception.ErrorCode;
 import project.personalproject.global.miniO.MinioProperties;
 
 import java.io.InputStream;
@@ -51,6 +53,8 @@ public class PostImageServiceImpl implements PostImageService {
      */
     @Override
     public PostImageResponse createImages(Post post, List<MultipartFile> images) throws Exception {
+        fileCountCheck(images);
+
         createBucketIfNotExists();
 
         List<String> imageNames = uploadToMinIO(images);
@@ -196,6 +200,12 @@ public class PostImageServiceImpl implements PostImageService {
     private void createBucketIfNotExists() throws Exception {
         if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(getBucketName()).build())) {
             minioClient.makeBucket(MakeBucketArgs.builder().bucket(getBucketName()).build());
+        }
+    }
+
+    private void fileCountCheck(List<MultipartFile> images) {
+        if (images.size() > 5) {
+            throw new PostImageException(ErrorCode.TOO_MANY_FILES);
         }
     }
 
