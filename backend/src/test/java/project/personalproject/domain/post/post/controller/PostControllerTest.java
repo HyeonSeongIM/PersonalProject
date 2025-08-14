@@ -15,13 +15,9 @@ import project.personalproject.domain.post.post.dto.request.CreatePostCommand;
 import project.personalproject.domain.post.post.service.PostService;
 import project.personalproject.global.security.jwt.JwtService;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PostController.class)
@@ -63,5 +59,25 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.errors[0].field").value("title"));
 
         verifyNoInteractions(postService);
+    }
+
+    @Test
+    @DisplayName("글 내용이 존재하지 않으면 에러 핸들링")
+    void content_not_found() throws Exception {
+        // given : 내용 X
+        var postJson = new MockMultipartFile(
+                "postRequest", "", "application/json",
+                objectMapper.writeValueAsBytes(new CreatePostCommand("테스트", ""))
+        );
+
+        // when & then
+        mockMvc.perform(multipart("/api/v1/post")
+                        .file(postJson)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message").value("Validation failed"))
+                .andExpect(jsonPath("$.errors[0].field").value("content"));
     }
 }
