@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,10 +18,11 @@ import project.personalproject.global.security.jwt.JwtService;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PostController.class)
 class PostControllerTest {
@@ -45,21 +47,21 @@ class PostControllerTest {
     void title_30words_over() throws Exception {
         // given: 31자 이상 제목
         String longTitle = "12345678910_12345678910_12345678910";
-        CreatePostCommand cmd = new CreatePostCommand(longTitle, "테스트 입니다.");
+        var postJson = new MockMultipartFile(
+                "postRequest", "", "application/json",
+                objectMapper.writeValueAsBytes(new CreatePostCommand(longTitle, "내용"))
+        );
 
         // when & then
-        mockMvc.perform(post("/api/v1/post")
+        mockMvc.perform(multipart("/api/v1/post")
+                        .file(postJson)
                         .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(cmd)))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message").value("Validation failed"))
                 .andExpect(jsonPath("$.errors[0].field").value("title"));
 
-        verify(postService).createPost(
-                any(CreatePostCommand.class),
-                any(),                // Member
-                anyList()             // Images
-        );
+        verifyNoInteractions(postService);
     }
 }
