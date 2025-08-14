@@ -7,7 +7,7 @@ public record CreatePostCommand(
         @NotBlank @Size(min = 1, max = 30)
         String title,
 
-        @NotBlank
+        @NotBlank @Size(min = 1)
         String content
 ) {
 

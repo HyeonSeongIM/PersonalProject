@@ -20,6 +20,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@WithMockUser
 @WebMvcTest(PostController.class)
 class PostControllerTest {
     @Autowired
@@ -37,7 +38,6 @@ class PostControllerTest {
     @MockitoBean
     private PostCommentService postCommentService;
 
-    @WithMockUser
     @Test
     @DisplayName("제목이 30자 이상시 에러 핸들링")
     void title_30words_over() throws Exception {
@@ -79,5 +79,7 @@ class PostControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message").value("Validation failed"))
                 .andExpect(jsonPath("$.errors[0].field").value("content"));
+
+        verifyNoInteractions(postService);
     }
 }
