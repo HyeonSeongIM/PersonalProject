@@ -10,7 +10,7 @@ database "MinIO" as M
 U -> C: 새 글 작성(제목/내용/이미지)
 
 == Post 본문 생성 ==
-C -> S: POST /api/v1/posts (title, content)
+C -> S: POST /api/v1/posts (title, content, images)
 
 opt Request validation (@Valid DTO)
   S -> S: @NotBlank(title), @Size, 금지어 체크
