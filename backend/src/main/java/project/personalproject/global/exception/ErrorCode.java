@@ -17,6 +17,7 @@ public enum ErrorCode {
 
     // 게시판 이미지 에러코드
     TOO_MANY_FILES(300, "이미지는 최대 5개까지 올릴 수 있습니다.", HttpStatus.BAD_REQUEST),
+    NOT_UPLOAD_IMAGE(301, "이미지를 올리지 못했습니다.", HttpStatus.BAD_REQUEST),
 
     // 검색 에러 코드
 

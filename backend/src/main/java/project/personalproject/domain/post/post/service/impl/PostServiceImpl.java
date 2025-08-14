@@ -24,7 +24,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
@@ -38,6 +37,7 @@ public class PostServiceImpl implements PostService {
      * @param member      작성자 정보
      * @return 생성된 게시글 정보
      */
+    @Transactional
     @Override
     public PostResponse createPost(CreatePostCommand postRequest, Member member, List<MultipartFile> images) throws Exception {
         Post post = Post.from(postRequest, member);
