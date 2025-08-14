@@ -145,14 +145,4 @@ public class PostImageServiceImpl implements PostImageService {
             throw new PostImageException(ErrorCode.TOO_MANY_FILES);
         }
     }
-
-    /**
-     * 게시글에 연결된 이미지 이름 목록 조회(편의 메서드).
-     *
-     * @param postId 게시글 ID
-     * @return       이미지 객체명 리스트
-     */
-    private List<String> getImageName(Long postId) {
-        return postImageRepository.findNamesByPostId(postId);
-    }
 }
