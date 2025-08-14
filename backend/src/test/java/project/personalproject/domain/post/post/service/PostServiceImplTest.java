@@ -1,4 +1,4 @@
-package project.personalproject.domain.post.post.service.impl;
+package project.personalproject.domain.post.post.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +16,7 @@ import project.personalproject.domain.post.post.entity.PostCategory;
 import project.personalproject.domain.post.post.entity.PostTag;
 import project.personalproject.domain.post.post.dto.PostDTO;
 import project.personalproject.domain.post.post.repository.PostRepository;
+import project.personalproject.domain.post.post.service.impl.PostServiceImpl;
 
 import java.util.Arrays;
 import java.util.List;
