@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.post.image.dto.PostImageListDTO;
-import project.personalproject.domain.post.image.dto.response.PostImageResponse;
 import project.personalproject.domain.post.image.entity.PostImage;
 import project.personalproject.domain.post.image.exception.PostImageException;
 import project.personalproject.domain.post.image.repository.PostImageRepository;
@@ -36,9 +35,9 @@ public class PostImageServiceImpl implements PostImageService {
     /**
      * 게시글 ID로 PostImage 페이지를 조회.
      *
-     * @param id        게시글 ID
-     * @param pageable  페이지 정보
-     * @return          PostImageListDTO (페이지 래핑)
+     * @param id       게시글 ID
+     * @param pageable 페이지 정보
+     * @return PostImageListDTO (페이지 래핑)
      */
     @Override
     public PostImageListDTO getPostImageByPostId(Long id, Pageable pageable) {
@@ -52,20 +51,19 @@ public class PostImageServiceImpl implements PostImageService {
      *
      * @param post   이미지가 연결될 게시글(영속 상태 권장)
      * @param images 업로드할 멀티파트 이미지들
-     * @return       presigned URL 목록을 담은 응답 DTO
+     * @return presigned URL 목록을 담은 응답 DTO
      * @throws Exception MinIO/네트워크 예외 등
-     *
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public PostImageResponse createImages(Post post, List<MultipartFile> images) throws Exception {
-        fileCountCheck(images); // 단순 검증
+    public void saveImages(Post post, List<String> images) throws Exception {
+        saveImageOrThrow(post, images); // DB 저장 (상위 TX에 참여한다는 가정)
+    }
 
-        List<String> imageNames = postImageIoService.uploadToMinIO(images); // 비TX(IO)
-
-        saveImageOrThrow(post, imageNames); // DB 저장 (상위 TX에 참여한다는 가정)
-
-        return PostImageResponse.of(postImageIoService.convertToUrls(imageNames)); // 비TX(IO)
+    @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public List<String> uploadImages(List<MultipartFile> images) throws Exception {
+        return postImageIoService.uploadToMinIO(images);
     }
 
     /**
@@ -75,16 +73,19 @@ public class PostImageServiceImpl implements PostImageService {
      *
      * @param postId 게시글 ID
      * @param images 신규 이미지 목록
-     * @return       presigned URL 목록 응답
+     * @return presigned URL 목록 응답
      * @throws Exception IO/DB 관련 예외
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public PostImageResponse updateImages(Long postId, List<MultipartFile> images) throws Exception {
+    public void updateImages(Long postId, List<MultipartFile> images) throws Exception {
         deleteImages(postId); // DB→IO 순으로 정리
 
         Post post = postRepository.findByIdOrThrow(postId);
-        return createImages(post, images);
+
+        List<String> imageNames = postImageIoService.uploadToMinIO(images);
+
+        saveImages(post, imageNames);
     }
 
     /**
@@ -106,10 +107,9 @@ public class PostImageServiceImpl implements PostImageService {
     /**
      * 이미지 엔티티 저장(예외 시 업로드 보상 삭제).
      *
-     * @param post        연결할 게시글
-     * @param imageNames  MinIO에 업로드된 객체명 목록
-     * @throws Exception  보상 삭제 실패 등
-     *
+     * @param post       연결할 게시글
+     * @param imageNames MinIO에 업로드된 객체명 목록
+     * @throws Exception 보상 삭제 실패 등
      */
     public void saveImageOrThrow(Post post, List<String> imageNames) throws Exception {
         try {
@@ -124,8 +124,8 @@ public class PostImageServiceImpl implements PostImageService {
     /**
      * 이미지 엔티티 저장 (배치 저장).
      *
-     * @param post        연결할 게시글
-     * @param imageNames  객체명 목록
+     * @param post       연결할 게시글
+     * @param imageNames 객체명 목록
      */
     public void savePostImages(Post post, List<String> imageNames) {
         var entities = imageNames.stream()
@@ -134,15 +134,4 @@ public class PostImageServiceImpl implements PostImageService {
         postImageRepository.saveAll(entities);
     }
 
-    /**
-     * 파일 개수 검증(최대 5개).
-     *
-     * @param images 업로드할 파일 목록
-     * @throws PostImageException TOO_MANY_FILES
-     */
-    private void fileCountCheck(List<MultipartFile> images) {
-        if (images.size() > 5) {
-            throw new PostImageException(ErrorCode.TOO_MANY_FILES);
-        }
-    }
 }

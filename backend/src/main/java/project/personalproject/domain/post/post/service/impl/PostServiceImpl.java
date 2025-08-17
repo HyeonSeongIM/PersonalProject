@@ -32,6 +32,9 @@ public class PostServiceImpl implements PostService {
 
     /**
      * 게시글 생성
+     * 1. 이미지 저장
+     * 2. 게시글 생성
+     * 3. 전체 저장
      *
      * @param postRequest 생성 요청 DTO
      * @param member      작성자 정보
@@ -40,9 +43,14 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public PostResponse createPost(CreatePostCommand postRequest, Member member, List<MultipartFile> images) throws Exception {
+        List<String> imageNames = postImageService.uploadImages(images);
+
         Post post = Post.from(postRequest, member);
+
         postRepository.save(post);
-        postImageService.createImages(post, images);
+
+        postImageService.saveImages(post, imageNames);
+
         return PostResponse.of(post);
     }
 

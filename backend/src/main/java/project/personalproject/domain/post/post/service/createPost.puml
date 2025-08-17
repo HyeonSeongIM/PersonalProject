@@ -4,7 +4,7 @@ participant "Client" as C
 participant "API Server" as S
 participant "PostService\n(@Transactional REQUIRED)" as PS
 participant "PostImageService\n(@Transactional REQUIRED)" as PIS
-participant "PostImageIoService\n(@Transactional NOT_SUPPORTED)" as PIO #CCCCCC
+participant "PostImageIoService\n(@Transactional NOT_SUPPORTED)" as PIO
 database "MySQL" as DB
 collections "MinIO" as M
 
@@ -12,30 +12,38 @@ U -> C: 새 글 작성(제목/내용/이미지)
 C -> S: POST /api/v1/posts {title, content, images[]}
 
 opt Request validation (@Valid DTO)
-  S -> S: @NotBlank(title), @Size, 금지어 체크
+  S -> S: @NotBlank, \n@Size
   alt [invalid]
     S --> C: 400 ValidationError
     return
   end
 end
 
-== 본문 + 이미지 (한 요청에서 처리) ==
-group TX[createPost() 트랜잭션 시작 - REQUIRED]
-  activate PS
-  S -> PS: 게시글 생성 요청
+opt BadRequest validation (MultipartFile)
+  S -> S: file =< 5
+  alt [invalid]
+    S --> C: 404 BadRequest
+    return
+  end
+end
 
-  PS -> DB: INSERT post(...)
-  DB --> PS: postId
+S -> PS : 게시글 생성 로직 호출
+PS -> PIS: 이미지 저장 로직 호출
 
-  PS -> PIS: createImages(post, images[])
-
-  loop 트랜잭션 일시정지
+  loop Network I/O
     PIS -> PIS: newFileName()
     PIS -> M: putObject(file, objectKey)
-    M --> PIS: 200 OK (etag)
-    PIS -> DB: INSERT post_image(postId, imageName)
-    DB --> PIS: OK
+    M --> PIS: getImageName
+    PIS -> PS: ImageName
   end
+
+group TX[createPost() 트랜잭션 시작 ]
+  activate PS
+
+  PS -> DB: INSERT post(title, content)
+  DB --> PIS: postId
+  PIS --> DB: INSERT post_image(postId, images)
+  DB -> PIS: 201 Created
 end
 
     PIS -> PS: OK

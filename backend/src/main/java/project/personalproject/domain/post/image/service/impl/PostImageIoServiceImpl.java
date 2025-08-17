@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import project.personalproject.domain.post.image.exception.PostImageException;
 import project.personalproject.domain.post.image.service.PostImageIoService;
+import project.personalproject.global.exception.ErrorCode;
 import project.personalproject.global.miniO.MinioProperties;
 
 import java.io.InputStream;
@@ -43,6 +45,8 @@ public class PostImageIoServiceImpl implements PostImageIoService {
      */
     @Override
     public List<String> uploadToMinIO(List<MultipartFile> images) throws Exception {
+        fileCountCheck(images);
+
         createBucketIfNotExists();
 
         List<String> imageList = new ArrayList<>();
@@ -134,5 +138,17 @@ public class PostImageIoServiceImpl implements PostImageIoService {
      */
     public String getBucketName() {
         return minioProperties.getBucket().getName();
+    }
+
+    /**
+     * 파일 개수 검증(최대 5개).
+     *
+     * @param images 업로드할 파일 목록
+     * @throws PostImageException TOO_MANY_FILES
+     */
+    private void fileCountCheck(List<MultipartFile> images) {
+        if (images.size() > 5) {
+            throw new PostImageException(ErrorCode.TOO_MANY_FILES);
+        }
     }
 }
