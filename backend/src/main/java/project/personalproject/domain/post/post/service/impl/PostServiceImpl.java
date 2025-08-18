@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.member.entity.Member;
+import project.personalproject.domain.post.image.exception.PostImageException;
 import project.personalproject.domain.post.image.service.PostImageService;
 import project.personalproject.domain.post.post.dto.PostDTO;
 import project.personalproject.domain.post.post.dto.PostListDTO;
@@ -40,7 +41,7 @@ public class PostServiceImpl implements PostService {
      * @param member      작성자 정보
      * @return 생성된 게시글 정보
      */
-    @Transactional
+    @Transactional(rollbackFor = {PostException.class, PostImageException.class})
     @Override
     public PostResponse createPost(CreatePostCommand postRequest, Member member, List<MultipartFile> images) throws Exception {
         List<String> imageNames = postImageService.uploadImages(images);

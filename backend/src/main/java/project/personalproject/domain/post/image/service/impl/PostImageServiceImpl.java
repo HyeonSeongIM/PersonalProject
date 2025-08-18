@@ -55,13 +55,13 @@ public class PostImageServiceImpl implements PostImageService {
      * @throws Exception MinIO/네트워크 예외 등
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = PostImageException.class)
     public void saveImages(Post post, List<String> images) throws Exception {
         saveImageOrThrow(post, images); // DB 저장 (상위 TX에 참여한다는 가정)
     }
 
     @Override
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED, rollbackFor = PostImageException.class)
     public List<String> uploadImages(List<MultipartFile> images) throws Exception {
         return postImageIoService.uploadToMinIO(images);
     }
@@ -77,7 +77,7 @@ public class PostImageServiceImpl implements PostImageService {
      * @throws Exception IO/DB 관련 예외
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = PostImageException.class)
     public void updateImages(Long postId, List<MultipartFile> images) throws Exception {
         deleteImages(postId); // DB→IO 순으로 정리
 
@@ -97,7 +97,7 @@ public class PostImageServiceImpl implements PostImageService {
      * @throws Exception MinIO 예외 등
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = PostImageException.class)
     public void deleteImages(Long postId) throws Exception {
         List<String> names = postImageRepository.findNamesByPostId(postId); // DB 조회
         postImageRepository.deleteAllByPostId(postId);                      // DB 삭제(TX)
