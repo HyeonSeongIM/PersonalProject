@@ -12,7 +12,9 @@ import java.util.List;
 public interface PostImageRepository extends JpaRepository<PostImage, Long> {
 
     @Query("select pi.imageName from PostImage pi where pi.post.id = :postId")
-    List<String> findUrlsByPostId(@Param("postId") Long postId);
+    List<String> findNamesByPostId(@Param("postId") Long postId);
 
     Page<PostImage> findByPostId(Long postId, Pageable pageable);
+
+    void deleteAllByPostId(Long postId);
 }

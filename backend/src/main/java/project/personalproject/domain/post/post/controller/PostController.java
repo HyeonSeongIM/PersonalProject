@@ -1,6 +1,7 @@
 package project.personalproject.domain.post.post.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +37,8 @@ public class PostController {
      * @return 생성된 게시글 응답 DTO
      * @throws Exception 파일 저장 실패 등 예외 발생 시
      */
-    @PostMapping("/create")
-    public ResponseEntity<PostResponse> postCreate(@RequestPart("postRequest") CreatePostCommand postRequest,
+    @PostMapping
+    public ResponseEntity<PostResponse> postCreate(@Valid @RequestPart("postRequest") CreatePostCommand postRequest,
                                                    @RequestPart("images") List<MultipartFile> images,
                                                    HttpServletRequest request) throws Exception {
         return ResponseEntity.ok(postService.createPost(postRequest, getMemberFromToken(request), images));

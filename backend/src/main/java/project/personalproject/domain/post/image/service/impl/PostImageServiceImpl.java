@@ -1,202 +1,137 @@
 package project.personalproject.domain.post.image.service.impl;
 
-import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.impl.TimeBasedGenerator;
-import io.minio.*;
-import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.post.image.dto.PostImageListDTO;
-import project.personalproject.domain.post.image.dto.response.PostImageResponse;
 import project.personalproject.domain.post.image.entity.PostImage;
+import project.personalproject.domain.post.image.exception.PostImageException;
 import project.personalproject.domain.post.image.repository.PostImageRepository;
+import project.personalproject.domain.post.image.service.PostImageIoService;
 import project.personalproject.domain.post.image.service.PostImageService;
 import project.personalproject.domain.post.post.entity.Post;
 import project.personalproject.domain.post.post.repository.PostRepository;
-import project.personalproject.global.miniO.MinioProperties;
+import project.personalproject.global.exception.ErrorCode;
 
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+/**
+ * 게시글 이미지 오케스트레이션 서비스.
+ * - 외부 IO(MinIO 업로드/삭제/URL 생성)는 PostImageIoService(NOT_SUPPORTED)로 분리
+ * - DB 저장/삭제는 여기서 수행 (상위 트랜잭션에 참여하거나, 호출부에서 @Transactional로 감싸는 구조)
+ */
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class PostImageServiceImpl implements PostImageService {
 
-    private final MinioClient minioClient;
-    private final MinioProperties minioProperties;
     private final PostImageRepository postImageRepository;
     private final PostRepository postRepository;
+    private final PostImageIoService postImageIoService;
 
     /**
-     * 이미지 이름 프론트엔드에 반환
+     * 게시글 ID로 PostImage 페이지를 조회.
+     *
+     * @param id       게시글 ID
+     * @param pageable 페이지 정보
+     * @return PostImageListDTO (페이지 래핑)
      */
     @Override
     public PostImageListDTO getPostImageByPostId(Long id, Pageable pageable) {
         Page<PostImage> postImages = postImageRepository.findByPostId(id, pageable);
-
         return PostImageListDTO.of(postImages);
     }
 
     /**
-     * 게시글 이미지 생성
-     * - 버킷이 없으면 새로 생성
-     * - 이미지 파일을 MinIO에 업로드하고 presigned URL 반환
+     * 게시글 이미지 생성.
+     * 흐름: 파일 수 검증(비TX) → 업로드(NOT_SUPPORTED) → DB 저장(상위 TX 참여) → presigned URL 반환(NOT_SUPPORTED)
+     *
+     * @param post   이미지가 연결될 게시글(영속 상태 권장)
+     * @param images 업로드할 멀티파트 이미지들
+     * @return presigned URL 목록을 담은 응답 DTO
+     * @throws Exception MinIO/네트워크 예외 등
      */
     @Override
-    public PostImageResponse createImages(Post post, List<MultipartFile> images) throws Exception {
-        createBucketIfNotExists();
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = PostImageException.class)
+    public void saveImages(Post post, List<String> images) throws Exception {
+        saveImageOrThrow(post, images); // DB 저장 (상위 TX에 참여한다는 가정)
+    }
 
-        List<String> imageNames = uploadToMinIO(images);
-        savePostImages(post, imageNames);
-
-        List<String> imageUrls = convertToUrls(imageNames);
-        return PostImageResponse.of(imageUrls);
-
+    @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED, rollbackFor = PostImageException.class)
+    public List<String> uploadImages(List<MultipartFile> images) throws Exception {
+        return postImageIoService.uploadToMinIO(images);
     }
 
     /**
-     * 게시글 이미지 수정
-     * - 기존 이미지 삭제 후 새로 업로드
+     * 게시글 이미지 수정.
+     * 단순화한 흐름: 기존 삭제 → 신규 업로드/저장.
+     * 필요 시 "신규 업로드 → DB 교체 → 구 객체 삭제" 순서로 바꾸면 더 안전하다.
+     *
+     * @param postId 게시글 ID
+     * @param images 신규 이미지 목록
+     * @return presigned URL 목록 응답
+     * @throws Exception IO/DB 관련 예외
      */
     @Override
-    public PostImageResponse updateImages(Long postId, List<MultipartFile> images) throws Exception {
-        deleteImages(postId);
-        // 기존 post 조회해서 사용해야 함
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = PostImageException.class)
+    public void updateImages(Long postId, List<MultipartFile> images) throws Exception {
+        deleteImages(postId); // DB→IO 순으로 정리
+
         Post post = postRepository.findByIdOrThrow(postId);
-        return createImages(post, images);
+
+        List<String> imageNames = postImageIoService.uploadToMinIO(images);
+
+        saveImages(post, imageNames);
     }
 
     /**
-     * 게시글 이미지 삭제
-     * - postId로 등록된 이미지 파일명을 추출하여 MinIO에서 삭제
+     * 게시글 이미지 삭제.
+     * 흐름: (DB에서 이름 조회) → DB 삭제(TX) → MinIO 객체 삭제(비TX)
+     * DB를 먼저 지우는 이유는, IO 성공 후 DB가 실패할 경우 정합성 깨짐을 방지하기 위함.
+     *
+     * @param postId 게시글 ID
+     * @throws Exception MinIO 예외 등
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = PostImageException.class)
     public void deleteImages(Long postId) throws Exception {
-        List<String> imageNames = getImageName(postId);
-
-        for (String image : imageNames) {
-            minioClient.removeObject(
-                    RemoveObjectArgs.builder()
-                            .bucket(getBucketName())
-                            .object(image)
-                            .build()
-            );
-        }
+        List<String> names = postImageRepository.findNamesByPostId(postId); // DB 조회
+        postImageRepository.deleteAllByPostId(postId);                      // DB 삭제(TX)
+        postImageIoService.deleteImages(names);                             // MinIO 삭제(비TX)
     }
 
     /**
-     * 실제 이미지 업로드 로직
-     * - 파일명을 UUID로 생성
-     * - 파일 스트림을 MinIO에 업로드
-     */
-    private List<String> uploadToMinIO(List<MultipartFile> images) throws Exception {
-        List<String> imageList = new ArrayList<>();
-
-        for (MultipartFile image : images) {
-            String imageName = newImageName();
-
-            // 리소스 누수 방지를 위해 try-with-resources 사용
-            try (InputStream imageStream = image.getInputStream()) {
-                PutObjectArgs putObjectArgs = PutObjectArgs.builder()
-                        .bucket(getBucketName())
-                        .object(imageName)
-                        .stream(imageStream, image.getSize(), -1)
-                        .contentType(image.getContentType())
-                        .build();
-
-                minioClient.putObject(putObjectArgs);
-            }
-
-            imageList.add(imageName);
-        }
-
-        return imageList;
-    }
-
-    /**
-     * 이미지 엔티티에 저장
+     * 이미지 엔티티 저장(예외 시 업로드 보상 삭제).
      *
-     * @param post
-     * @param imageNames
+     * @param post       연결할 게시글
+     * @param imageNames MinIO에 업로드된 객체명 목록
+     * @throws Exception 보상 삭제 실패 등
      */
-    private void savePostImages(Post post, List<String> imageNames) {
-        for (String name : imageNames) {
-            postImageRepository.save(PostImage.from(post, name));
+    public void saveImageOrThrow(Post post, List<String> imageNames) throws Exception {
+        try {
+            savePostImages(post, imageNames);
+        } catch (RuntimeException e) {
+            // DB 저장 실패 시 업로드 보상 삭제
+            postImageIoService.deleteImages(imageNames);
+            throw new PostImageException(ErrorCode.NOT_UPLOAD_IMAGE);
         }
     }
 
     /**
-     * 이미지 이름을 URL로 변환
+     * 이미지 엔티티 저장 (배치 저장).
      *
-     * @param imageNames
-     * @return
-     * @throws Exception
+     * @param post       연결할 게시글
+     * @param imageNames 객체명 목록
      */
-    private List<String> convertToUrls(List<String> imageNames) throws Exception {
-        List<String> urls = new ArrayList<>();
-        for (String name : imageNames) {
-            urls.add(minioClient.getPresignedObjectUrl(
-                    GetPresignedObjectUrlArgs.builder()
-                            .method(Method.GET)
-                            .bucket(getBucketName())
-                            .object(name)
-                            .build()));
-        }
-        return urls;
-    }
-
-    /**
-     * 이미 저장되어 있는 이미지들을 불러옴
-     */
-    private List<String> getImageName(Long postId) {
-        List<String> urls = postImageRepository.findUrlsByPostId(postId);
-
-        List<String> imageNames = new ArrayList<>();
-
-        for (String url : urls) {
-            // URL에서 파일명 추출: ? 파라미터 제거
-            String imageNameWithParams = url.substring(url.lastIndexOf("/") + 1);
-            String imageName = imageNameWithParams.split("\\?")[0];
-            imageNames.add(imageName);
-        }
-
-        return imageNames;
-    }
-
-    /**
-     * UUID v1 기반으로 고유한 파일명을 생성
-     * - "post-" 접두사 + UUID 문자열 (하이픈 제거)
-     */
-    private String newImageName() {
-        TimeBasedGenerator generator = Generators.timeBasedGenerator();
-        UUID uuid = generator.generate();
-        return "post-" + uuid.toString().toLowerCase().replaceAll("-", "");
-    }
-
-    /**
-     * final로 선언 시, minioProperties가 아직 초기화되기 전일 수 있으므로 위험
-     * 안전하게 메서드로 분리해서 사용
-     */
-    private String getBucketName() {
-        return minioProperties.getBucket().getName();
-    }
-
-    /**
-     * 버킷이 존재하지 않으면 생성
-     *
-     * @throws Exception
-     */
-    private void createBucketIfNotExists() throws Exception {
-        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(getBucketName()).build())) {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(getBucketName()).build());
-        }
+    public void savePostImages(Post post, List<String> imageNames) {
+        var entities = imageNames.stream()
+                .map(n -> PostImage.from(post, n))
+                .toList();
+        postImageRepository.saveAll(entities);
     }
 
 }

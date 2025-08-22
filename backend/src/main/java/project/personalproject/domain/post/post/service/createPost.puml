@@ -1,0 +1,53 @@
+@startuml
+actor User as U
+participant "Client" as C
+participant "API Server" as S
+participant "PostService\n(@Transactional REQUIRED)" as PS
+participant "PostImageService\n(@Transactional REQUIRED)" as PIS
+participant "PostImageIoService\n(@Transactional NOT_SUPPORTED)" as PIO
+database "MySQL" as DB
+collections "MinIO" as M
+
+U -> C: 새 글 작성(제목/내용/이미지)
+C -> S: POST /api/v1/posts {title, content, images[]}
+
+opt Request validation (@Valid DTO)
+  S -> S: @NotBlank, \n@Size
+  alt [invalid]
+    S --> C: 400 ValidationError
+    return
+  end
+end
+
+opt BadRequest validation (MultipartFile)
+  S -> S: file =< 5
+  alt [invalid]
+    S --> C: 404 BadRequest
+    return
+  end
+end
+
+S -> PS : 게시글 생성 로직 호출
+PS -> PIS: 이미지 저장 로직 호출
+
+  loop Network I/O
+    PIS -> PIS: newFileName()
+    PIS -> M: putObject(file, objectKey)
+    M --> PIS: getImageName
+    PIS -> PS: ImageName
+  end
+
+group TX[createPost() 트랜잭션 시작 ]
+  activate PS
+
+  PS -> DB: INSERT post(title, content)
+  DB --> PIS: postId
+  PIS --> DB: INSERT post_image(postId, images)
+  DB -> PIS: 201 Created
+end
+
+    PIS -> PS: OK
+    PS --> S: PostResponse{ id=postId, ... }
+
+S --> C: 201 Created + PostResponse(+images)
+@enduml
