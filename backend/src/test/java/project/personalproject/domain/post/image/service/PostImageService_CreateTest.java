@@ -52,4 +52,6 @@ class PostImageService_CreateTest {
         assertThatThrownBy(() -> postImageService.createImages(command, images))
                 .isInstanceOf(PostImageException.class);
     }
+
+    //TODO : 서킷브레이커
 }

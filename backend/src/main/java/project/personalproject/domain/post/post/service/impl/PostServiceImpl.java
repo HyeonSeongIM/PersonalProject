@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.personalproject.domain.member.entity.Member;
-import project.personalproject.domain.post.image.exception.PostImageException;
 import project.personalproject.domain.post.image.service.PostImageService;
 import project.personalproject.domain.post.post.dto.PostDTO;
 import project.personalproject.domain.post.post.dto.PostListDTO;
@@ -21,6 +21,8 @@ import project.personalproject.domain.post.post.service.PostService;
 import project.personalproject.domain.search.service.SearchIndexService;
 import project.personalproject.global.exception.ErrorCode;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -41,7 +43,7 @@ public class PostServiceImpl implements PostService {
      * @param member      작성자 정보
      * @return 생성된 게시글 정보
      */
-    @Transactional(rollbackFor = {PostException.class, PostImageException.class})
+    @Transactional(rollbackFor = {IOException.class, SQLException.class}, isolation = Isolation.DEFAULT)
     @Override
     public PostResponse createPost(CreatePostCommand postRequest, Member member, List<MultipartFile> images) throws Exception {
         List<String> imageNames = postImageService.uploadImages(images);
